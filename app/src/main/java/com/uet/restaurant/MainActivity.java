@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -13,30 +14,35 @@ import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.uet.restaurant.Common.Common;
 import com.uet.restaurant.Retrofit.IRestaurantAPI;
 import com.uet.restaurant.Retrofit.RetrofitClient;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import dmax.dialog.SpotsDialog;
+import io.paperdb.Paper;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
     private static final int APP_REQUEST_CODE = 1305;
 
-    IRestaurantAPI restaurantAPI;
-    CompositeDisposable compositeDisposable = new CompositeDisposable();
-    AlertDialog dialog;
+    private IRestaurantAPI mIRestaurantAPI;
+    private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
+    private AlertDialog mDialog;
 
     private List<AuthUI.IdpConfig> providers;
     private FirebaseAuth firebaseAuth;
@@ -44,9 +50,9 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.btn_sign_in)
     Button btn_sign_in;
-
     @OnClick(R.id.btn_sign_in)
     void loginUser(){
+        Log.d(TAG, "loginUser: called");
         startActivityForResult(AuthUI.getInstance().createSignInIntentBuilder()
                 .setAvailableProviders(providers).build(), APP_REQUEST_CODE);
     }
@@ -61,11 +67,12 @@ public class MainActivity extends AppCompatActivity {
 
             if (resultCode == RESULT_OK){
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                //System.out.println(user);
+                //startActivity(new Intent(MainActivity.this, HomeActivity.class));
             }
             else{
                 Toast.makeText(this, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
             }
-            dialog.show();
 
         }
 
@@ -74,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreated: started");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -85,13 +93,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        compositeDisposable.clear();
+        mCompositeDisposable.clear();
         super.onDestroy();
     }
 
     private void init() {
-        dialog = new SpotsDialog.Builder().setContext(this).setCancelable(false).build();
-        restaurantAPI = RetrofitClient.getInstance(Common.API_RESTAURANT_ENDPOINT).create(IRestaurantAPI.class);
+        Log.d(TAG, "init: called!!");
+
+
         providers = Arrays.asList(new AuthUI.IdpConfig.PhoneBuilder().build());
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -99,45 +108,62 @@ public class MainActivity extends AppCompatActivity {
             FirebaseUser user = firebaseAuth1.getCurrentUser();
 
             if (user != null){ // user đã đăng nhập
+                mDialog.show();
                 //Save FBID
-                //Paper.book().write(Common.REMEMBER_FBID, user.getUid());
-                dialog.show();
-                compositeDisposable.add(
-                        restaurantAPI.getUser((String) Common.API_KEY,
-                                user.getUid())
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(userModel -> {
-
-                                        if (userModel.isSuccess()){
-
-                                            if (userModel.isSuccess()){
-                                                Common.currentUser = userModel.getResult().get(0);
-                                                startActivity(new Intent(MainActivity.this, HomeActivity.class));
-                                                finish();
-                                            }
-                                            else{ // if user not register
-                                                startActivity(new Intent(MainActivity.this, UpdateInfoActivity.class));
-                                                finish();
-                                            }
-                                            dialog.dismiss();
+                Paper.book().write(Common.REMEMBER_FBID, user.getUid());
+                //https://firebase.google.com/docs/cloud-messaging/android/client?hl=vi
+                // we need to retrive the current token
+                FirebaseInstanceId.getInstance()
+                        .getInstanceId()
+                        .addOnFailureListener(e -> { Toast.makeText(this, "[GET TOKEN]", Toast.LENGTH_SHORT).show();
+                        })
+                        .addOnCompleteListener(task -> {
+                            Map<String, String> headers = new HashMap<>();
+                            headers.put("Authorization", Common.buildJWT(Common.API_KEY));
+                            mCompositeDisposable.add(mIRestaurantAPI.updateTokenToServer(headers,
+                                    task.getResult().getToken())
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(tokenModel -> {
+                                        if (!tokenModel.isSuccess()){
+                                            Toast.makeText(this, "[UPDATE TOKEN]" + tokenModel.getMessage(), Toast.LENGTH_SHORT).show();
+                                            Log.d(TAG, "[UPDATE TOKEN]" + tokenModel.getMessage());
                                         }
-                                        else{
-                                            dialog.dismiss();
-                                            Toast.makeText(MainActivity.this, "[UPDATE USER API RETURN]" + userModel.getMessage(), Toast.LENGTH_SHORT).show();
-                                        }
+                                        mCompositeDisposable.add(mIRestaurantAPI.getUser(headers)
+                                                .subscribeOn(Schedulers.io())
+                                                .observeOn(AndroidSchedulers.mainThread())
+                                                .subscribe(userModel -> {
+                                                    // nếu người dùng đã tồn tại trong db
+                                                    if (userModel.isSuccess()){
+                                                        Common.currentUser = userModel.getResult().get(0);
+                                                        startActivity(new Intent(MainActivity.this, HomeActivity.class));
+                                                        finish();
+                                                    }
+                                                    else{ // nếu người dùng chưa có thông tin
+                                                        startActivity(new Intent(MainActivity.this, UpdateInfoActivity.class));
+                                                        finish();
+                                                    }
+                                                    mDialog.dismiss();
+                                                }, throwable -> {
+                                                    mDialog.dismiss();
+                                                    Toast.makeText(this, "[GET USER]" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                                                    Log.d(TAG, "[GET USER]" + throwable.getMessage());
+                                                }));
+                                    }, throwable -> {
+                                        mDialog.dismiss();
+                                        Toast.makeText(this, "[GET TOKEN ERROR]" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                                        Log.d(TAG, "[GET TOKEN ERROR" + throwable.getMessage());
+                                    }));
+                        });
 
-                                    },
-                                    throwable -> {
-                                        dialog.dismiss();
-                                        Toast.makeText(MainActivity.this, "[UPDATE USER API]" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
-                                    })
-                );
             }
             else{
                 loginUser();
             }
         };
+        Paper.init(this);
+        mDialog = new SpotsDialog.Builder().setContext(this).setCancelable(false).build();
+        mIRestaurantAPI = RetrofitClient.getInstance(Common.API_RESTAURANT_ENDPOINT).create(IRestaurantAPI.class);
 
     }
 }

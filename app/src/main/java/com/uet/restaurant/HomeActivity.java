@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -40,11 +42,14 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dmax.dialog.SpotsDialog;
+import io.paperdb.Paper;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -53,21 +58,22 @@ import ss.com.bannerslider.Slider;
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
+    private static final String TAG = HomeActivity.class.getSimpleName();
 
-    TextView txt_user_name, txt_user_phone;
+    private TextView txt_user_name, txt_user_phone;
 
     @BindView(R.id.banner_slider)
     Slider banner_slider;
     @BindView(R.id.recycler_restaurant)
     RecyclerView recycler_restaurant;
 
-    IRestaurantAPI restaurantAPI;
-    CompositeDisposable compositeDisposable = new CompositeDisposable();
-    android.app.AlertDialog dialog;
+    private IRestaurantAPI mIRestaurantAPI;
+    private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
+    private android.app.AlertDialog mDialog;
 
     @Override
     protected void onDestroy() {
-        compositeDisposable.clear();
+        mCompositeDisposable.clear();
         super.onDestroy();
     }
 
@@ -75,10 +81,11 @@ public class HomeActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        Log.d(TAG, "onCreate: started!!");
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
 
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -89,37 +96,49 @@ public class HomeActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         View headerView = navigationView.getHeaderView(0);
-        txt_user_name = (TextView) headerView.findViewById(R.id.txt_user_name);
-        txt_user_phone = (TextView) headerView.findViewById(R.id.txt_user_phone);
 
-        txt_user_name.setText(Common.currentUser.getName());
-        txt_user_phone.setText(Common.currentUser.getUserPhone());
+        txt_user_name = headerView.findViewById(R.id.txt_user_name);
+        txt_user_phone = headerView.findViewById(R.id.txt_user_phone);
+
+        if (Common.currentUser != null && !TextUtils.isEmpty(Common.currentUser.getName()))
+            txt_user_name.setText(Common.currentUser.getName());
+        if (Common.currentUser != null && !TextUtils.isEmpty(Common.currentUser.getAddress()))
+            txt_user_phone.setText(Common.currentUser.getAddress());
+
+
+        //txt_user_name.setText(Common.currentUser.getName());
+        //txt_user_phone.setText(Common.currentUser.getUserPhone());
 
         init();
         initView();
 
         loadRestaurant();
+
     }
 
     private void loadRestaurant() {
-        dialog.show();
-
-        compositeDisposable.add(
-                restaurantAPI.getRestaurant((String) Common.API_KEY)
+        Log.d(TAG, "loadRestaurant: called!!");
+        mDialog.show();
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", Common.buildJWT(Common.API_KEY));
+        mCompositeDisposable.add(mIRestaurantAPI.getRestaurant(headers)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(restaurantModel -> {
-
                             // user EventBus to send local event set adapter and slider
-                                    EventBus.getDefault().post(new RestaurantLoadEvent(true, restaurantModel.getResult()));
-                                },
-                                throwable -> {
-                                  EventBus.getDefault().post(new RestaurantLoadEvent(false, throwable.getMessage()));
-                                })
+                            EventBus.getDefault().post(new RestaurantLoadEvent(true, restaurantModel.getResult()));
+                            mDialog.dismiss();
+                            },
+                            throwable -> {
+                                mDialog.dismiss();
+                                EventBus.getDefault().post(new RestaurantLoadEvent(false, throwable.getMessage()));
+                                Toast.makeText(this, "[GET RESTAURANT] " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                        })
         );
     }
 
     private void initView() {
+        Log.d(TAG, "initView: called!!");
         ButterKnife.bind(this);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -128,9 +147,10 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private void init() {
-        dialog = new SpotsDialog.Builder().setContext(this).setCancelable(false).build();
-        restaurantAPI = RetrofitClient.getInstance(Common.API_RESTAURANT_ENDPOINT).create(IRestaurantAPI.class);
-
+        Log.d(TAG, "init: called!!");
+        mDialog = new SpotsDialog.Builder().setContext(this).setCancelable(false).build();
+        mIRestaurantAPI = RetrofitClient.getInstance(Common.API_RESTAURANT_ENDPOINT).create(IRestaurantAPI.class);
+        Paper.init(this);
         Slider.init(new PicassoImageLoadingService());
 
     }
@@ -151,20 +171,27 @@ public class HomeActivity extends AppCompatActivity
         return true;
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        return super.onSupportNavigateUp();
-    }
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) return true;
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
+    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        // Handle navigation view item clicks here.
         int id =  menuItem.getItemId();
         if (id == R.id.nav_logout){
             signOut();
@@ -173,7 +200,7 @@ public class HomeActivity extends AppCompatActivity
 
         }
         else if (id == R.id.nav_update_info){
-
+            startActivity(new Intent(HomeActivity.this, UpdateInfoActivity.class));
         }
         else if (id == R.id.nav_order_history){
 
@@ -182,7 +209,9 @@ public class HomeActivity extends AppCompatActivity
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
+
     private void signOut(){
+        Log.d(TAG, "signOut: called!!");
         //Alert dialog to confirm
         AlertDialog confimrDialog = new AlertDialog.Builder(this)
                 .setTitle("Đăng xuất")
@@ -216,6 +245,7 @@ public class HomeActivity extends AppCompatActivity
     // Listener Event Bus
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void processRestaurantLoadEvent(RestaurantLoadEvent event){
+        Log.d(TAG, "processRestaurantLoadEvent: called!!");
         if (event.isSuccess()){
             displayBanner(event.getRestaurantList());
             displayRestaurant(event.getRestaurantList());
@@ -223,15 +253,18 @@ public class HomeActivity extends AppCompatActivity
         else {
             Toast.makeText(this, "[RESTAURANT LOAD]" + event.getMessage(), Toast.LENGTH_SHORT).show();
         }
-        dialog.dismiss();
+        mDialog.dismiss();
     }
 
     private void displayRestaurant(List<Restaurant> restaurantList) {
+        Log.d(TAG, "displayRestaurant: called!!");
         RestaurantAdapter adapter = new RestaurantAdapter(this, restaurantList);
         recycler_restaurant.setAdapter(adapter);
     }
 
     private void displayBanner(List<Restaurant> restaurantList) {
+        Log.d(TAG, "displayBanner: called!!");
+        Log.d(TAG, "displayBanner: size: " + restaurantList.size());
         banner_slider.setAdapter(new RestaurantSliderAdapter(restaurantList));
     }
 }

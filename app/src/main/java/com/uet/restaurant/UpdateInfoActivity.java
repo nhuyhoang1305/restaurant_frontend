@@ -9,6 +9,8 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -22,9 +24,13 @@ import com.uet.restaurant.Common.Common;
 import com.uet.restaurant.Retrofit.IRestaurantAPI;
 import com.uet.restaurant.Retrofit.RetrofitClient;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dmax.dialog.SpotsDialog;
+import io.paperdb.Paper;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -32,12 +38,12 @@ import io.reactivex.schedulers.Schedulers;
 
 public class UpdateInfoActivity extends AppCompatActivity {
 
-    IRestaurantAPI restaurantAPI;
-    CompositeDisposable compositeDisposable = new CompositeDisposable();
-    AlertDialog dialog;
+    private static final String TAG = UpdateInfoActivity.class.getSimpleName();
 
-    FirebaseUser user;
-
+    private IRestaurantAPI mIRestaurantAPI;
+    private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
+    private AlertDialog mDialog;
+    //private FirebaseUser user;
     @BindView(R.id.edit_user_name)
     EditText edit_user_name;
     @BindView(R.id.edit_user_address)
@@ -50,7 +56,7 @@ public class UpdateInfoActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        compositeDisposable.clear();
+        mCompositeDisposable.clear();
         super.onDestroy();
     }
 
@@ -58,6 +64,8 @@ public class UpdateInfoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_info);
+
+        Log.d(TAG, "onCreate: started !!");
 
         ButterKnife.bind(this);
 
@@ -67,8 +75,6 @@ public class UpdateInfoActivity extends AppCompatActivity {
 
 
     //Override back arrow
-
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
@@ -80,29 +86,32 @@ public class UpdateInfoActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        Log.d(TAG, "initView: called!!");
         toolbar.setTitle(getString(R.string.update_infomation));
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        btn_update.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.show();
-                compositeDisposable.add(
-                        restaurantAPI.updateUserInfo((String) Common.API_KEY,
-                                user.getPhoneNumber().toString(),
+        btn_update.setOnClickListener(v -> {
+            Log.d(TAG, "onClick: calledd!!");
+            mDialog.show();
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            if (user != null){
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", Common.buildJWT(Common.API_KEY));
+                mCompositeDisposable.add(
+                        mIRestaurantAPI.updateUserInfo(headers,
+                                user.getPhoneNumber(),
                                 edit_user_name.getText().toString(),
-                                edit_user_address.getText().toString(),
-                                user.getUid())
+                                edit_user_address.getText().toString())
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(updateUserModel -> {
 
                                             if (updateUserModel.isSuccess()){
                                                 // If user has been update, just refesh again
-                                                compositeDisposable.add(
-                                                        restaurantAPI.getUser((String) Common.API_KEY, user.getUid())
+                                                mCompositeDisposable.add(
+                                                        mIRestaurantAPI.getUser(headers)
                                                                 .subscribeOn(Schedulers.io())
                                                                 .observeOn(AndroidSchedulers.mainThread())
                                                                 .subscribe(userModel -> {
@@ -113,36 +122,49 @@ public class UpdateInfoActivity extends AppCompatActivity {
                                                                                 finish();
                                                                             }
                                                                             else{
-                                                                                Toast.makeText(UpdateInfoActivity.this, "[GET USER RESULT]" + userModel.getMessage(), Toast.LENGTH_SHORT).show();
+                                                                                Toast.makeText(UpdateInfoActivity.this, "[GET USER RESULT]" + userModel.getResult(), Toast.LENGTH_SHORT).show();
                                                                             }
-                                                                            dialog.dismiss();
+                                                                            mDialog.dismiss();
                                                                         },
                                                                         throwable -> {
-                                                                            dialog.dismiss();
+                                                                            mDialog.dismiss();
                                                                             Toast.makeText(UpdateInfoActivity.this, "[GET USER]" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                                                                         })
                                                 );
                                             }
                                             else{
-                                                dialog.dismiss();
+                                                mDialog.dismiss();
                                                 Toast.makeText(UpdateInfoActivity.this, "[UPDATE USER API RETURN]" + updateUserModel.getMessage(), Toast.LENGTH_SHORT).show();
                                             }
 
                                         },
                                         throwable -> {
-                                            dialog.dismiss();
+                                            mDialog.dismiss();
                                             Toast.makeText(UpdateInfoActivity.this, "[UPDATE USER API]" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                                         })
                 );
-
             }
+            else{
+                Toast.makeText(UpdateInfoActivity.this, "Chưa đăng nhập!!", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(UpdateInfoActivity.this, MainActivity.class));
+                finish();
+            }
+
+
         });
+
+        if (Common.currentUser != null && !TextUtils.isEmpty(Common.currentUser.getName()))
+            edit_user_name.setText(Common.currentUser.getName());
+        if (Common.currentUser != null && !TextUtils.isEmpty(Common.currentUser.getAddress()))
+            edit_user_address.setText(Common.currentUser.getAddress());
 
     }
 
     private void init() {
-        dialog = new SpotsDialog.Builder().setCancelable(false).setContext(this).build();
-        restaurantAPI = RetrofitClient.getInstance(Common.API_RESTAURANT_ENDPOINT).create(IRestaurantAPI.class);
-        user = FirebaseAuth.getInstance().getCurrentUser();
+        Log.d(TAG, "init: called!!");
+        Paper.init(this);
+        mDialog = new SpotsDialog.Builder().setCancelable(false).setContext(this).build();
+        mIRestaurantAPI = RetrofitClient.getInstance(Common.API_RESTAURANT_ENDPOINT)
+                .create(IRestaurantAPI.class);
     }
 }
