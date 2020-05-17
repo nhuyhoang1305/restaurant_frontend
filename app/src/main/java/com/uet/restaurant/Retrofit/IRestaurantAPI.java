@@ -55,7 +55,7 @@ public interface IRestaurantAPI {
                                         @Query("restaurantId") int restaurantId);
 
     @GET("food")
-    Observable<FoodModel> getFoodMenu(@HeaderMap Map<String, String> headers,
+    Observable<FoodModel> getFoodOfMenu(@HeaderMap Map<String, String> headers,
                                               @Query("menuId") int menuId);
 
     @GET("foodById")

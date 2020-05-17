@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MenuActivity"
+    android:background="@color/divider"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:background="@color/button_color"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:titleTextColor="@android:color/white"
+                app:popupTheme="@style/AppTheme.PopupOverlay"/>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <!-- load image by KenBurns
+         https://github.com/flavioarfaria/KenBurnsView#basic-usage
+         -->
+        <com.flaviofaria.kenburnsview.KenBurnsView
+            android:id="@+id/img_restaurant"
+            android:scaleType="centerCrop"
+            android:layout_width="match_parent"
+            android:layout_height="150dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/divider">
+
+            <TextView
+                android:text="Theo tâm trạng hoặc sở thích của bạn"
+                android:textSize="20sp"
+                android:textColor="@color/button_color"
+                android:fontFamily="@font/magnifika"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_category"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_gravity="bottom|end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <!--
+        https://github.com/nex3z/NotificationBadge#usage
+        -->
+        <com.nex3z.notificationbadge.NotificationBadge
+            android:id="@+id/badge"
+            android:layout_gravity="top|right"
+            app:nbMaxTextLength="2"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_margin="@dimen/fab_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrice"
+            android:src="@drawable/ic_shopping_cart_white_24dp"
+            />
+    </FrameLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

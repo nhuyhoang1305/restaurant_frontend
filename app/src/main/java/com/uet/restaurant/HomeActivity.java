@@ -219,7 +219,7 @@ public class HomeActivity extends AppCompatActivity
                 .setNegativeButton("CANCLE", (dialog1, which) -> dialog1.dismiss())
                 .setPositiveButton("OK", (dialog12, which) -> {
                     Common.currentUser = null;
-
+                    Common.currentRestaurant = null;
                     FirebaseAuth.getInstance().signOut();
                     Intent intent = new Intent(HomeActivity.this, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK); //clear all previous activity

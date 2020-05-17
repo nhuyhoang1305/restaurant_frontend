@@ -18,4 +18,11 @@
     <string name="sign_out">Sign Out</string>
     <string name="nearby_restaurant">Near By Restaurant</string>
     <string name="order_history">Order History</string>
+    <string name="our_specialized">Our Specialized</string>
+    <string name="money_sign">$</string>
+    <string name="size">Size</string>
+    <string name="description">Description</string>
+    <string name="view_cart">View Cart</string>
+    <string name="add_on">Addon</string>
+    <string name="search">Search</string>
 </resources>

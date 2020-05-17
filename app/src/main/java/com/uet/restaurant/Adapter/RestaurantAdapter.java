@@ -1,6 +1,7 @@
 package com.uet.restaurant.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +13,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
+import com.uet.restaurant.Common.Common;
 import com.uet.restaurant.Interface.IOnRecyclerViewClickListener;
+import com.uet.restaurant.MenuActivity;
+import com.uet.restaurant.Model.EventBus.MenuItemEvent;
 import com.uet.restaurant.Model.Restaurant;
 import com.uet.restaurant.R;
 
+import org.greenrobot.eventbus.EventBus;
 import org.w3c.dom.Text;
 
 import java.util.List;
@@ -50,7 +55,12 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
 
         holder.setListener((view, position1) -> {
             //Implement late
-            Toast.makeText(context, ""+restaurantList.get(position).getName(), Toast.LENGTH_SHORT).show();
+            Common.currentRestaurant = restaurantList.get(position);
+            //Here use postSticky, that mean this event will be listen from other activity
+            // it will different with just 'post'
+            EventBus.getDefault().postSticky(new MenuItemEvent(true, restaurantList.get(position)));
+            context.startActivity(new Intent(context, MenuActivity.class));
+            //Toast.makeText(context, ""+restaurantList.get(position).getName(), Toast.LENGTH_SHORT).show();
         });
     }
 

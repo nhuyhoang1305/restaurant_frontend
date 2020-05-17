@@ -109,52 +109,77 @@ public class MainActivity extends AppCompatActivity {
 
             if (user != null){ // user đã đăng nhập
                 mDialog.show();
-                //Save FBID
-                Paper.book().write(Common.REMEMBER_FBID, user.getUid());
-                //https://firebase.google.com/docs/cloud-messaging/android/client?hl=vi
-                // we need to retrive the current token
-                FirebaseInstanceId.getInstance()
-                        .getInstanceId()
-                        .addOnFailureListener(e -> { Toast.makeText(this, "[GET TOKEN]", Toast.LENGTH_SHORT).show();
-                        })
-                        .addOnCompleteListener(task -> {
-                            Map<String, String> headers = new HashMap<>();
-                            headers.put("Authorization", Common.buildJWT(Common.API_KEY));
-                            mCompositeDisposable.add(mIRestaurantAPI.updateTokenToServer(headers,
-                                    task.getResult().getToken())
-                                    .subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(tokenModel -> {
-                                        if (!tokenModel.isSuccess()){
-                                            Toast.makeText(this, "[UPDATE TOKEN]" + tokenModel.getMessage(), Toast.LENGTH_SHORT).show();
-                                            Log.d(TAG, "[UPDATE TOKEN]" + tokenModel.getMessage());
-                                        }
-                                        mCompositeDisposable.add(mIRestaurantAPI.getUser(headers)
-                                                .subscribeOn(Schedulers.io())
-                                                .observeOn(AndroidSchedulers.mainThread())
-                                                .subscribe(userModel -> {
-                                                    // nếu người dùng đã tồn tại trong db
-                                                    if (userModel.isSuccess()){
-                                                        Common.currentUser = userModel.getResult().get(0);
-                                                        startActivity(new Intent(MainActivity.this, HomeActivity.class));
-                                                        finish();
-                                                    }
-                                                    else{ // nếu người dùng chưa có thông tin
-                                                        startActivity(new Intent(MainActivity.this, UpdateInfoActivity.class));
-                                                        finish();
-                                                    }
-                                                    mDialog.dismiss();
-                                                }, throwable -> {
-                                                    mDialog.dismiss();
-                                                    Toast.makeText(this, "[GET USER]" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
-                                                    Log.d(TAG, "[GET USER]" + throwable.getMessage());
-                                                }));
-                                    }, throwable -> {
-                                        mDialog.dismiss();
-                                        Toast.makeText(this, "[GET TOKEN ERROR]" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
-                                        Log.d(TAG, "[GET TOKEN ERROR" + throwable.getMessage());
-                                    }));
-                        });
+
+                mCompositeDisposable.add(mIRestaurantAPI.getKey(user.getUid())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(getKeyModel -> {
+                            if (getKeyModel.isSuccess()){
+                                //Write jwt to variable
+                                Common.API_KEY = getKeyModel.getToken();
+                                //Log.d(TAG, "API_KEY: " + Common.API_KEY);
+                                //Log.d(TAG, "TOKEN_TASK: " + task.getResult().getToken());
+
+                                //Save FBID
+                                Paper.book().write(Common.REMEMBER_FBID, user.getUid());
+
+                                //https://firebase.google.com/docs/cloud-messaging/android/client?hl=vi
+                                // we need to retrive the current token
+                                FirebaseInstanceId.getInstance()
+                                        .getInstanceId()
+                                        .addOnFailureListener(e -> { Toast.makeText(this, "[GET TOKEN]", Toast.LENGTH_SHORT).show();
+                                        })
+                                        .addOnCompleteListener(task -> {
+                                            Map<String, String> headers = new HashMap<>();
+                                            headers.put("Authorization", Common.buildJWT(Common.API_KEY));
+                                            mCompositeDisposable.add(mIRestaurantAPI.updateTokenToServer(headers,
+                                                    task.getResult().getToken())
+                                                    .subscribeOn(Schedulers.io())
+                                                    .observeOn(AndroidSchedulers.mainThread())
+                                                    .subscribe(tokenModel -> {
+                                                        if (!tokenModel.isSuccess()){
+                                                            Toast.makeText(this, "[UPDATE TOKEN]" + tokenModel.getMessage(), Toast.LENGTH_SHORT).show();
+                                                            Log.d(TAG, "[UPDATE TOKEN]" + tokenModel.getMessage());
+                                                        }
+                                                        mCompositeDisposable.add(mIRestaurantAPI.getUser(headers)
+                                                                .subscribeOn(Schedulers.io())
+                                                                .observeOn(AndroidSchedulers.mainThread())
+                                                                .subscribe(userModel -> {
+                                                                    // nếu người dùng đã tồn tại trong db
+                                                                    if (userModel.isSuccess()){
+                                                                        Common.currentUser = userModel.getResult().get(0);
+                                                                        startActivity(new Intent(MainActivity.this, HomeActivity.class));
+                                                                        finish();
+                                                                    }
+                                                                    else{ // nếu người dùng chưa có thông tin
+                                                                        startActivity(new Intent(MainActivity.this, UpdateInfoActivity.class));
+                                                                        finish();
+                                                                    }
+                                                                    mDialog.dismiss();
+                                                                }, throwable -> {
+                                                                    mDialog.dismiss();
+                                                                    Toast.makeText(this, "[GET USER]" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                                                                    Log.d(TAG, "[GET USER]" + throwable.getMessage());
+                                                                }));
+                                                    }, throwable -> {
+                                                        mDialog.dismiss();
+                                                        Toast.makeText(this, "[GET TOKEN ERROR]" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                                                        Log.d(TAG, "[GET TOKEN ERROR" + throwable.getMessage());
+                                                    }));
+                                        });
+
+                            }
+                            else{
+                                mDialog.dismiss();
+                                Toast.makeText(MainActivity.this, getKeyModel.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }, throwable -> {
+                            mDialog.dismiss();
+                            Toast.makeText(MainActivity.this, "Can't get Json Web Token " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, "Can't get Json Web Token " + throwable.getMessage());
+                        }));
+
+
 
             }
             else{
@@ -165,5 +190,21 @@ public class MainActivity extends AppCompatActivity {
         mDialog = new SpotsDialog.Builder().setContext(this).setCancelable(false).build();
         mIRestaurantAPI = RetrofitClient.getInstance(Common.API_RESTAURANT_ENDPOINT).create(IRestaurantAPI.class);
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (listener != null && firebaseAuth != null){
+            firebaseAuth.addAuthStateListener(listener);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        if (listener != null && firebaseAuth != null){
+            firebaseAuth.removeAuthStateListener(listener);
+        }
+        super.onStop();
     }
 }
