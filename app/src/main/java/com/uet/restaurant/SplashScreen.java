@@ -47,7 +47,7 @@ public class SplashScreen extends AppCompatActivity {
     private IRestaurantAPI mIRestaurantAPI;
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     private AlertDialog mDialog;
-    //private FirebaseUser user;
+
     @Override
     protected void onDestroy() {
         mCompositeDisposable.clear();

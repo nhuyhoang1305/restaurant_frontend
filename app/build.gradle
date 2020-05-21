@@ -88,7 +88,15 @@ dependencies {
 
     implementation 'com.android.support:multidex:1.0.3'
 
-    //Expansion Pancel
+    //Expansion Panel
     implementation 'com.github.florent37:expansionpanel:1.2.4'
+
+    // Date Calendar
+    implementation 'com.wdullaer:materialdatetimepicker:4.2.1'
+
+    // Location
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
+    implementation 'com.google.android.gms:play-services-auth:18.0.0'
+
 
 }

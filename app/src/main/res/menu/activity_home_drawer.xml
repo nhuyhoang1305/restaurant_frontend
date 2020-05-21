@@ -7,25 +7,34 @@
         <item
             android:id="@+id/nav_nearby"
             android:icon="@drawable/ic_restaurant_gray_24dp"
-            android:title="@string/nearby_restaurant" />
+            android:title="@string/nearby_restaurant" />\
     </group>
+
+    <group>
+        <item
+            android:id="@+id/nav_fav"
+            android:icon="@drawable/ic_favorite_gray_24dp"
+            android:title="@string/menu_fav" />\
+    </group>
+
     <group>
         <item
             android:id="@+id/nav_order_history"
             android:icon="@drawable/ic_history_gray_24dp"
-            android:title="@string/order_history" />
+            android:title="@string/order_history" />\
     </group>
+
     <group>
         <item
             android:id="@+id/nav_update_info"
             android:icon="@drawable/ic_account_circle_gray_24dp"
-            android:title="@string/update_infomation" />
-    </group>
-    <group>
-        <item
-            android:id="@+id/nav_logout"
-            android:icon="@drawable/ic_exit_to_app_gray_24dp"
-            android:title="@string/sign_out" />
+            android:title="@string/update_information" />\
     </group>
 
+    <group>
+        <item
+            android:id="@+id/nav_log_out"
+            android:icon="@drawable/ic_exit_to_app_gray_24dp"
+            android:title="@string/sign_out" />\
+    </group>
 </menu>

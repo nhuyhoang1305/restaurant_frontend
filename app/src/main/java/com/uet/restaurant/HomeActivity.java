@@ -193,18 +193,22 @@ public class HomeActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         // Handle navigation view item clicks here.
         int id =  menuItem.getItemId();
-        if (id == R.id.nav_logout){
+        if (id == R.id.nav_log_out){
             signOut();
         }
         else if (id == R.id.nav_nearby){
-
+            startActivity(new Intent(HomeActivity.this, NearbyRestaurantActivity.class));
         }
         else if (id == R.id.nav_update_info){
             startActivity(new Intent(HomeActivity.this, UpdateInfoActivity.class));
         }
         else if (id == R.id.nav_order_history){
-
+            startActivity(new Intent(HomeActivity.this, ViewOrderActivity.class));
         }
+        else if (id == R.id.nav_fav){
+            startActivity(new Intent(HomeActivity.this, FavoriteActivity.class));
+        }
+
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;

@@ -1,5 +1,7 @@
 package com.uet.restaurant.Model;
 
+import com.uet.restaurant.Common.Common;
+
 public class Food {
     private int id;
     private String name;
@@ -9,6 +11,12 @@ public class Food {
     private boolean isSize;
     private boolean isAddon;
     private int discount;
+
+    public String convert(String _image){
+        String words[] = _image.split("/");
+        return new StringBuilder().append(Common.API_RESTAURANT_ENDPOINT)
+                .append(words[3]).toString();
+    }
 
     public int getId() {
         return id;
@@ -35,7 +43,7 @@ public class Food {
     }
 
     public String getImage() {
-        return image;
+        return convert(image);
     }
 
     public void setImage(String image) {

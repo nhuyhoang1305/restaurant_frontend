@@ -127,7 +127,8 @@ public class FoodDetailActivity extends AppCompatActivity {
         });
 
         btn_view_cart.setOnClickListener(v -> {
-            //startActivity(new Intent(FoodDetailActivity.this, CartListActivity.class));
+            Log.d(TAG, "load to CartListActivity");
+            startActivity(new Intent(FoodDetailActivity.this, CartListActivity.class));
         });
     }
 

@@ -25,4 +25,12 @@
     <string name="view_cart">View Cart</string>
     <string name="add_on">Addon</string>
     <string name="search">Search</string>
+    <string name="cart">Cart</string>
+    <string name="empty_cart">Empty Cart</string>
+    <string name="your_order">Your Order</string>
+    <string name="title_activity_nearby_restaurant">Map</string>
+    <string name="menu_fav">Favorite</string>
+    <string name="place_order">Place Order</string>
+    <string name="update_information">Update Information</string>
+
 </resources>

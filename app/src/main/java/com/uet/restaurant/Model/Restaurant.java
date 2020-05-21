@@ -1,5 +1,7 @@
 package com.uet.restaurant.Model;
 
+import com.uet.restaurant.Common.Common;
+
 public class Restaurant {
 
     // Nên nhớ, tất cả tên biến nên giống như thuộc tính trong JSON trả về từ API, nó sẽ giúp JSON parse đúng
@@ -8,6 +10,12 @@ public class Restaurant {
     private String name, address, phone, image, paymentUrl;
     private Float lat, lng; //kinh do, vi do
     private int userOwner;
+
+    public String convert(String _image){
+        String words[] = _image.split("/");
+        return new StringBuilder().append(Common.API_RESTAURANT_ENDPOINT)
+                .append(words[3]).toString();
+    }
 
     public int getId() {
         return id;
@@ -42,7 +50,7 @@ public class Restaurant {
     }
 
     public String getImage() {
-        return image;
+        return convert(image);
     }
 
     public void setImage(String image) {

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 public class Common {
-    public static final String API_RESTAURANT_ENDPOINT = "http://192.168.0.102:3000/";
+    public static final String API_RESTAURANT_ENDPOINT = "http://192.168.43.144:3000/";
 
     // later, secure it with Firebase Remote Config
     public static String API_KEY = "";
@@ -46,6 +46,20 @@ public class Common {
             if (item.getFoodId() == id) {
                 currentFavOfRestaurant.remove(item);
             }
+        }
+    }
+    public static String convertStatusToString(int orderStatus) {
+        switch (orderStatus) {
+            case 0:
+                return "Placed";
+            case 1:
+                return "Shipping";
+            case 2:
+                return "Shipped";
+            case -1:
+                return "Cancelled";
+            default:
+                return "Cancelled";
         }
     }
 }

@@ -44,7 +44,7 @@
             android:background="@color/divider">
 
             <TextView
-                android:text="Theo tâm trạng hoặc sở thích của bạn"
+                android:text="Hãy chọn theo sở thích của bạn"
                 android:textSize="20sp"
                 android:textColor="@color/button_color"
                 android:fontFamily="@font/magnifika"
