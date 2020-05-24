@@ -19,7 +19,6 @@ import com.uet.restaurant.Model.UserModel;
 import java.util.Map;
 
 import io.reactivex.Observable;
-
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -43,7 +42,7 @@ public interface IRestaurantAPI {
 
     @GET("restaurantById")
     Observable<RestaurantModel> getRestaurantById(@HeaderMap Map<String, String> headers,
-                                                  @Query("restaurantId") int id);
+                                                  @Query("restaurantId") String id);
 
     @GET("nearbyrestaurant")
     Observable<RestaurantModel> getNearByRestaurant(@HeaderMap Map<String, String> headers,
@@ -128,6 +127,7 @@ public interface IRestaurantAPI {
     @POST("updateOrder")
     @FormUrlEncoded
     Observable<UpdateOrderModel> updateOrder(@HeaderMap Map<String, String> headers,
+                                             @Field("orderId") String orderId,
                                              @Field("orderDetail") String orderDetail);
 
     @POST("token")

@@ -3,13 +3,21 @@ package com.uet.restaurant.Model;
 import com.uet.restaurant.Common.Common;
 
 public class Food {
+
     private int id;
+
     private String name;
+
     private String description;
+
     private String image;
+
     private Double price;
+
     private boolean isSize;
+
     private boolean isAddon;
+
     private int discount;
 
     public String convert(String _image){

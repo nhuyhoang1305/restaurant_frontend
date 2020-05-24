@@ -1,9 +1,13 @@
 package com.uet.restaurant.Model;
 
 public class Addon {
+    
     private int id;
+
     private String name;
+
     private String description;
+
     private float extraPrice;
 
     public int getId() {

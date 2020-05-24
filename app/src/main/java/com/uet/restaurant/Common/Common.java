@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 public class Common {
-    public static final String API_RESTAURANT_ENDPOINT = "http://192.168.43.144:3000/";
+    public static final String API_RESTAURANT_ENDPOINT = "http://192.168.0.102:3000/";
 
     // later, secure it with Firebase Remote Config
     public static String API_KEY = "";

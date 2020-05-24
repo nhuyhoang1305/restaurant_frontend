@@ -7,8 +7,21 @@ public class Restaurant {
     // Nên nhớ, tất cả tên biến nên giống như thuộc tính trong JSON trả về từ API, nó sẽ giúp JSON parse đúng
 
     private int id;
-    private String name, address, phone, image, paymentUrl;
-    private Float lat, lng; //kinh do, vi do
+
+    private String name;
+
+    private String address;
+
+    private String phone;
+
+    private String image;
+
+    private String paymentUrl;
+
+    private Float lat;
+
+    private Float lng; //kinh do, vi do
+
     private int userOwner;
 
     public String convert(String _image){

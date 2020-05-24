@@ -1,6 +1,7 @@
 package com.uet.restaurant.Model;
 
 public class FavoriteOnlyId {
+
     private int foodId;
 
     public FavoriteOnlyId(int foodId) {

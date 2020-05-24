@@ -1,12 +1,19 @@
 package com.uet.restaurant.Model;
 
 public class Favorite {
+
     private String fbid;
+
     private String restaurantName;
+
     private String foodName;
+
     private String foodImage;
+
     private int foodId;
+
     private int restaurantId;
+
     private Double price;
 
     public String getFbid() {

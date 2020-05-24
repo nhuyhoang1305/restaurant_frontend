@@ -1,12 +1,6 @@
 package com.uet.restaurant;
 
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +8,12 @@ import android.view.MenuItem;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.uet.restaurant.Adapter.MyOrderAdapter;
 import com.uet.restaurant.Common.Common;
@@ -67,7 +67,7 @@ public class ViewOrderActivity extends AppCompatActivity implements ILoadMore {
         init();
         initView();
 
-//        getAllOrder();
+        //getAllOrder();
         getMaxOrder();
     }
 

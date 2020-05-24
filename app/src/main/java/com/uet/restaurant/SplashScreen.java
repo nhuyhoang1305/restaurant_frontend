@@ -1,15 +1,13 @@
 package com.uet.restaurant;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.Manifest;
-import android.accounts.Account;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -21,7 +19,6 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.uet.restaurant.Common.Common;
-import com.uet.restaurant.Model.GetKeyModel;
 import com.uet.restaurant.Retrofit.IRestaurantAPI;
 import com.uet.restaurant.Retrofit.RetrofitClient;
 
@@ -30,10 +27,8 @@ import java.util.Map;
 
 import dmax.dialog.SpotsDialog;
 import io.paperdb.Paper;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /*

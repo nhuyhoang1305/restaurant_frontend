@@ -1,8 +1,11 @@
 package com.uet.restaurant.Model;
 
 public class Size {
+
     private int id;
+
     private String description;
+
     private Float extraPrice;
 
     public int getId() {

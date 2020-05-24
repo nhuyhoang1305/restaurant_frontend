@@ -1,7 +1,14 @@
 package com.uet.restaurant.Model;
 
 public class User {
-    private String fbid, userPhone, name, address;
+
+    private String fbid;
+
+    private String userPhone;
+
+    private String name;
+
+    private String address;
 
     public User(String fbid, String userPhone, String name, String address) {
         this.fbid = fbid;
