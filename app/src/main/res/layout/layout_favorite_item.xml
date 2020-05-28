@@ -15,39 +15,54 @@
             android:id="@+id/img_food"
             android:src="@drawable/app_icon"
             android:scaleType="centerCrop"
-            android:layout_width="100dp"
-            android:layout_height="100dp" />
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_weight="1"/>
 
         <LinearLayout
-            android:layout_marginLeft="8dp"
-            android:layout_weight="10"
+            android:paddingLeft="10dp"
+            android:layout_weight="9"
             android:layout_gravity="center_vertical"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_width="0dp"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/txt_food_name"
-                android:text="Chicken Biryani"
-                android:textColor="@color/button_color"
-                android:fontFamily="@font/magnifika"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
 
-            <TextView
-                android:id="@+id/txt_food_price"
-                android:text="$180"
-                android:textSize="14sp"
-                android:textStyle="italic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            <LinearLayout
+                android:layout_width="100dp"
+                android:layout_weight="5"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingTop="10px">
+                <TextView
+                    android:id="@+id/txt_food_name"
+                    android:text="Chicken Biryani"
+                    android:textColor="#151515"
+                    android:fontFamily="@font/nunitobold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/txt_food_price"
+                    android:text="$180"
+                    android:textSize="14sp"
+                    android:textStyle="italic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
 
             <TextView
                 android:id="@+id/txt_restaurant_name"
                 android:text="Restaurant A"
-                android:textSize="22sp"
+                android:textSize="14sp"
                 android:textColor="@color/button_color"
-                android:fontFamily="@font/magnifika"
+                android:fontFamily="@font/nunitobold"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_horizontal"
+                android:layout_weight="4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 

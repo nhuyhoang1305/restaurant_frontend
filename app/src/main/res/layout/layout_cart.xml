@@ -5,122 +5,183 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
-        android:padding="8dp"
-        android:weightSum="10"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:weightSum="10">
 
         <ImageView
             android:id="@+id/img_food"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/app_icon"
-            android:layout_width="100dp"
-            android:layout_height="100dp" />
+            android:src="@drawable/app_icon" />
+
+        /*code by Huong*/
 
         <LinearLayout
-            android:layout_gravity="center_vertical"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginLeft="8dp"
-            android:layout_weight="10"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content">
+            android:paddingLeft="10dp"
+            android:paddingTop="10px">
 
             <TextView
                 android:id="@+id/txt_food_name"
-                android:fontFamily="@font/magnifika"
-                android:text="Chicken Biryani"
-                android:textColor="@color/button_color"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nunitobold"
+                android:text="Chicken Biryani"
+                android:textColor="#151515"
+                android:textSize="10sp" />
+
+            <TextView
+                android:id="@+id/txt_food_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:text="$180"
+                android:textColor="@color/button_color"
+                android:textSize="10sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="15dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:src="@drawable/ic_clear_gray_24dp" />
+        </LinearLayout>
+        /***/
+
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+
+            android:orientation="vertical">
+
+            <!--            <TextView-->
+            <!--                android:id="@+id/txt_food_name"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:fontFamily="@font/titillium"-->
+            <!--                android:text="Chicken Biryani"-->
+            <!--                android:textColor="@color/button_color" />-->
 
             <LinearLayout
-                android:weightSum="18"
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingLeft="60px"
+                android:weightSum="18">
 
-                <TextView
-                    android:id="@+id/txt_food_price"
-                    android:text="$180"
-                    android:textSize="14sp"
-                    android:textStyle="italic"
-                    android:layout_weight="5"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
+                <!--                <TextView-->
+                <!--                    android:id="@+id/txt_food_price"-->
+                <!--                    android:layout_width="0dp"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_weight="5"-->
+                <!--                    android:text="$180"-->
+                <!--                    android:textSize="14sp"-->
+                <!--                    android:textStyle="italic" />-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
 
-                <ImageView
-                    android:src="@drawable/ic_clear_gray_24dp"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
+                    <ImageView
+                        android:id="@+id/img_decrease"
+                        android:layout_width="15dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:src="@drawable/ic_remove_primary_24dp" />
 
-                <ImageView
-                    android:id="@+id/img_decrease"
-                    android:src="@drawable/ic_remove_primary_24dp"
-                    android:layout_weight="2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/txt_quantity"
+                        android:layout_width="20dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/quantity_background_textview"
+                        android:gravity="center_horizontal"
+                        android:text="1"
+                        android:textSize="10sp"
+                        android:textStyle="italic" />
 
-                <TextView
-                    android:id="@+id/txt_quantity"
-                    android:text="1"
-                    android:textSize="14sp"
-                    android:textStyle="italic"
-                    android:gravity="center_horizontal"
-                    android:background="@drawable/quantity_background_textview"
-                    android:layout_weight="2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
+                    <ImageView
+                        android:id="@+id/img_increase"
+                        android:layout_width="15dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:src="@drawable/ic_add_primary_24dp" />
+                </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/img_increase"
-                    android:src="@drawable/ic_add_primary_24dp"
-                    android:layout_weight="2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
-
-                <ImageView
-                    android:src="@drawable/ic_drag_handle_gray_24dp"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:id="@+id/txt_price_new"
-                    android:text="180"
-                    android:textSize="14sp"
-                    android:textStyle="italic"
-                    android:gravity="center_horizontal"
-                    android:layout_weight="5"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
+                <!--                <ImageView-->
+                <!--                    android:layout_width="0dp"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_weight="1"-->
+                <!--                    android:src="@drawable/ic_drag_handle_gray_24dp" />-->
 
             </LinearLayout>
 
             <LinearLayout
-                android:weightSum="18"
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="18">
 
                 <TextView
                     android:id="@+id/txt_extra_price"
-                    android:text="Extra Price($): +180"
-                    android:textSize="14sp"
-                    android:textStyle="italic"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="Extra Price($): +180"
+                    android:textSize="10sp"
+                    android:textStyle="italic" />
 
             </LinearLayout>
 
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/img_delete_food"
-            android:src="@drawable/ic_clear_primary_24dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="0dp">
+
+            <TextView
+                android:id="@+id/txt_price_new"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="8"
+                android:gravity="center_horizontal"
+                android:text="180"
+                android:textColor="@color/button_color"
+                android:textSize="14sp"
+                android:textStyle="italic" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="20px">
+
+            <ImageView
+
+                android:id="@+id/img_delete_food"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:paddingLeft="0dp"
+                android:src="@drawable/bt_ic_delete_forever" />
+        </LinearLayout>
+
 
     </LinearLayout>
 

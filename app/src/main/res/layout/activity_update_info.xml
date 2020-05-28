@@ -28,13 +28,13 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:padding="8dp">
         
         <TextView
             android:text="Thông tin người dùng"
-            android:fontFamily="@font/magnifika"
+            android:fontFamily="@font/nunitobold"
             android:textColor="@color/button_color"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
@@ -47,7 +47,7 @@
 
         <LinearLayout
             android:orientation="vertical"
-            android:padding="16dp"
+            android:padding="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -100,10 +100,10 @@
         android:id="@+id/btn_update"
         android:text="UPDATE"
         android:textColor="@android:color/white"
-        android:fontFamily="@font/magnifika"
+        android:fontFamily="@font/nunitobold"
         android:layout_margin="8dp"
         app:layout_alignSelf="flex_start"
-        android:background="@drawable/border_button"
+        android:background="@drawable/gradient_color"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

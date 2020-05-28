@@ -28,9 +28,9 @@
 
     <com.flaviofaria.kenburnsview.KenBurnsView
         android:id="@+id/img_category"
-        android:scaleType="centerCrop"
         android:layout_width="match_parent"
-        android:layout_height="150dp" />
+        android:layout_height="140dp"
+        android:scaleType="centerCrop" />
 
     <LinearLayout
         android:padding="16dp"
@@ -41,9 +41,9 @@
 
         <TextView
             android:text="@string/our_specialized"
-            android:fontFamily="@font/magnifika"
+            android:fontFamily="@font/nunitobold"
             android:textColor="@color/button_color"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

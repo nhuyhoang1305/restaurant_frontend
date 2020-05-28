@@ -20,8 +20,8 @@
             <TextView
                 android:id="@+id/txt_order_number"
                 android:text="Order #1234"
-                android:textSize="22sp"
-                android:fontFamily="@font/magnifika"
+                android:textSize="16sp"
+                android:fontFamily="@font/nunitobold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -68,7 +68,7 @@
 
                 <TextView
                     android:text="Order on"
-                    android:fontFamily="@font/magnifika"
+                    android:fontFamily="@font/nunitobold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
@@ -107,7 +107,7 @@
                 <TextView
                     android:id="@+id/txt_num_of_item"
                     android:text="Num of Item 2"
-                    android:fontFamily="@font/magnifika"
+                    android:fontFamily="@font/nunitobold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
