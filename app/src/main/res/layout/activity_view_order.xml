@@ -25,7 +25,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
-        android:padding="16dp"
+        android:padding="8dp"
         android:background="@color/divider"
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -33,9 +33,9 @@
 
         <TextView
             android:text="@string/your_order"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textColor="@color/button_color"
-            android:fontFamily="@font/magnifika"
+            android:fontFamily="@font/nunitobold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

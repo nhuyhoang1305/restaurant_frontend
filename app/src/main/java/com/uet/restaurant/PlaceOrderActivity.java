@@ -30,10 +30,14 @@ import com.uet.restaurant.Database.CartDataSource;
 import com.uet.restaurant.Database.CartDatabase;
 import com.uet.restaurant.Database.LocalCartDataSource;
 import com.uet.restaurant.Model.EventBus.SendTotalCashEvent;
+import com.uet.restaurant.Model.FCMResponse;
+import com.uet.restaurant.Model.FCMSendData;
 import com.uet.restaurant.Retrofit.IBraintreeAPI;
+import com.uet.restaurant.Retrofit.IFCMService;
 import com.uet.restaurant.Retrofit.IRestaurantAPI;
 import com.uet.restaurant.Retrofit.RetrofitBraintreeClient;
 import com.uet.restaurant.Retrofit.RetrofitClient;
+import com.uet.restaurant.Retrofit.RetrofitFCMClient;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -46,6 +50,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,6 +59,7 @@ import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class PlaceOrderActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
@@ -89,6 +95,8 @@ public class PlaceOrderActivity extends AppCompatActivity implements DatePickerD
     private CartDataSource mCartDataSource;
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     private AlertDialog mDialog;
+
+    private IFCMService ifcmService;
 
     private boolean isSelectedDate = false;
     private boolean isAddNewAddress = false;
@@ -264,11 +272,32 @@ public class PlaceOrderActivity extends AppCompatActivity implements DatePickerD
 
                                                                     @Override
                                                                     public void onSuccess(Integer integer) {
-                                                                        Toast.makeText(PlaceOrderActivity.this, "Order :Placed", Toast.LENGTH_SHORT).show();
-                                                                        Intent homeActivity = new Intent(PlaceOrderActivity.this, HomeActivity.class);
-                                                                        homeActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                                        startActivity(homeActivity);
-                                                                        finish();
+                                                                        //Create Notification
+                                                                        Map<String, String> dataSend = new HashMap<>();
+                                                                        dataSend.put(Common.NOTIFIC_TITLE, "New Order");
+                                                                        dataSend.put(Common.NOTIFIC_CONTENT, "You have new order " + createOrderModel.getResult().get(0).getOrderNumber());
+
+                                                                        FCMSendData sendData = new FCMSendData(Common.createTopicSender(Common.getTopicChannel(
+                                                                                Common.currentRestaurant.getId()
+                                                                        )), dataSend);
+
+                                                                        mCompositeDisposable.add(ifcmService.sendNotificiaton(sendData)
+                                                                        .subscribeOn(Schedulers.io())
+                                                                        .observeOn(AndroidSchedulers.mainThread())
+                                                                        .subscribe(fcmResponse -> {
+                                                                            Toast.makeText(PlaceOrderActivity.this, "Order :Placed", Toast.LENGTH_SHORT).show();
+                                                                            Intent homeActivity = new Intent(PlaceOrderActivity.this, HomeActivity.class);
+                                                                            homeActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                                            startActivity(homeActivity);
+                                                                            finish();
+                                                                        }, throwable -> {
+                                                                            Toast.makeText(PlaceOrderActivity.this, "Order Placed but can't send notification to server", Toast.LENGTH_SHORT).show();
+                                                                            Intent homeActivity = new Intent(PlaceOrderActivity.this, HomeActivity.class);
+                                                                            homeActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                                            startActivity(homeActivity);
+                                                                            finish();
+                                                                        }));
+
                                                                     }
 
                                                                     @Override
@@ -283,7 +312,7 @@ public class PlaceOrderActivity extends AppCompatActivity implements DatePickerD
 
                                                 }, throwable -> {
                                                     mDialog.show();
-                                                    Toast.makeText(this, "[UPDATE ORDER]"+throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(this, "[UPDATE ORDER]", Toast.LENGTH_SHORT).show();
                                                 }));
                                     } else {
                                         mDialog.dismiss();
@@ -394,11 +423,31 @@ public class PlaceOrderActivity extends AppCompatActivity implements DatePickerD
 
                                                                                             @Override
                                                                                             public void onSuccess(Integer integer) {
-                                                                                                Toast.makeText(PlaceOrderActivity.this, "Order :Placed", Toast.LENGTH_SHORT).show();
-                                                                                                Intent homeActivity = new Intent(PlaceOrderActivity.this, HomeActivity.class);
-                                                                                                homeActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                                                                startActivity(homeActivity);
-                                                                                                finish();
+                                                                                                //Create Notification
+                                                                                                Map<String, String> dataSend = new HashMap<>();
+                                                                                                dataSend.put(Common.NOTIFIC_TITLE, "New Order");
+                                                                                                dataSend.put(Common.NOTIFIC_CONTENT, "You have new order " + createOrderModel.getResult().get(0).getOrderNumber());
+
+                                                                                                FCMSendData sendData = new FCMSendData(Common.createTopicSender(Common.getTopicChannel(
+                                                                                                        Common.currentRestaurant.getId()
+                                                                                                )), dataSend);
+
+                                                                                                mCompositeDisposable.add(ifcmService.sendNotificiaton(sendData)
+                                                                                                        .subscribeOn(Schedulers.io())
+                                                                                                        .observeOn(AndroidSchedulers.mainThread())
+                                                                                                        .subscribe(fcmResponse -> {
+                                                                                                            Toast.makeText(PlaceOrderActivity.this, "Order :Placed", Toast.LENGTH_SHORT).show();
+                                                                                                            Intent homeActivity = new Intent(PlaceOrderActivity.this, HomeActivity.class);
+                                                                                                            homeActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                                                                            startActivity(homeActivity);
+                                                                                                            finish();
+                                                                                                        }, throwable -> {
+                                                                                                            Toast.makeText(PlaceOrderActivity.this, "Order Placed but can't send notification to server", Toast.LENGTH_SHORT).show();
+                                                                                                            Intent homeActivity = new Intent(PlaceOrderActivity.this, HomeActivity.class);
+                                                                                                            homeActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                                                                            startActivity(homeActivity);
+                                                                                                            finish();
+                                                                                                        }));
                                                                                             }
 
                                                                                             @Override
@@ -449,6 +498,7 @@ public class PlaceOrderActivity extends AppCompatActivity implements DatePickerD
     private void init() {
         Log.d(TAG, "init: called!!");
         Log.d(TAG, "init: "+Common.currentRestaurant.getPaymentUrl());
+        ifcmService = RetrofitFCMClient.getInstance().create(IFCMService.class);
         mIRestaurantAPI = RetrofitClient.getInstance(Common.API_RESTAURANT_ENDPOINT).create(IRestaurantAPI.class);
         mIBraintreeAPI = RetrofitBraintreeClient.getInstance(Common.currentRestaurant.getPaymentUrl()).create(IBraintreeAPI.class);
         mDialog = new SpotsDialog.Builder().setContext(this).setCancelable(false).build();

@@ -42,12 +42,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp">
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fab_add_to_cart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|top"
+                    android:src="@drawable/ic_shopping_cart_white_24dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:paddingTop="60dp"
+                    android:paddingBottom="60dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -66,16 +75,10 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
+                            android:textColor="@color/button_color"
                             android:layout_weight="8"
                             android:text="200.0"
                             android:textSize="18sp" />
-
-                        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                            android:id="@+id/fab_add_to_cart"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical|right"
-                            android:src="@drawable/ic_shopping_cart_white_24dp" />
 
                     </LinearLayout>
 
@@ -94,9 +97,9 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/magnifika"
+                            android:fontFamily="@font/nunitoitalic"
                             android:text="@string/size"
-                            android:textSize="22sp" />
+                            android:textSize="16sp" />
 
                         <RadioGroup
                             android:id="@+id/rdi_group_size"
@@ -132,8 +135,8 @@
                             <!-- HEADER -->
                             <TextView
                                 android:text="@string/add_on"
-                                android:textSize="22sp"
-                                android:fontFamily="@font/magnifika"
+                                android:textSize="16sp"
+                                android:fontFamily="@font/nunitoitalic"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content" />
 
@@ -177,7 +180,7 @@
                         <TextView
                             android:text="@string/description"
                             android:textStyle="bold"
-                            android:fontFamily="@font/magnifika"
+                            android:fontFamily="@font/nunitoitalic"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
@@ -201,8 +204,8 @@
             android:textColor="@android:color/white"
             android:layout_alignParentBottom="true"
             android:layout_margin="8dp"
-            android:fontFamily="@font/magnifika"
-            android:background="@drawable/border_button"
+            android:fontFamily="@font/nunitobold"
+            android:background="@drawable/gradient_color"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

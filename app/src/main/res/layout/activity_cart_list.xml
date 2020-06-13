@@ -52,9 +52,9 @@
 
                 <TextView
                     android:text="Total Cost"
-                    android:textSize="30sp"
-                    android:textColor="@color/colorPrimary"
-                    android:fontFamily="@font/magnifika"
+                    android:textSize="16sp"
+                    android:textColor="#151515"
+                    android:fontFamily="@font/nunitobold"
                     android:layout_weight="4"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content" />
@@ -62,9 +62,9 @@
                 <TextView
                     android:id="@+id/txt_final_price"
                     android:text="0"
-                    android:textSize="30sp"
-                    android:textColor="@color/colorPrice"
-                    android:fontFamily="@font/magnifika"
+                    android:textSize="17sp"
+                    android:textColor="@color/button_color"
+                    android:fontFamily="@font/nunitobold"
                     android:gravity="right"
                     android:layout_weight="4"
                     android:layout_width="0dp"
@@ -78,8 +78,8 @@
             android:id="@+id/btn_order"
             android:text="ORDER"
             android:textColor="@android:color/white"
-            android:fontFamily="@font/magnifika"
-            android:background="@drawable/border_button"
+            android:fontFamily="@font/nunitobold"
+            android:background="@drawable/gradient_color"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:layout_width="match_parent"

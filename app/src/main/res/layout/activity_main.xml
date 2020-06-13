@@ -8,28 +8,28 @@
     app:alignItems="stretch"
     app:alignContent="stretch"
     app:justifyContent="center"
-    android:background="@android:color/white"
+    android:background="@drawable/gradient_color"
     tools:context=".MainActivity">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:background="@color/button_color"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_alignSelf="flex_start"
-        android:padding="16dp"
-        >
+<!--    <LinearLayout-->
+<!--        android:orientation="vertical"-->
+<!--        android:background="@color/button_color"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_alignSelf="flex_start"-->
+<!--        android:padding="16dp"-->
+<!--        >-->
 
-        <TextView
-            android:text="@string/app_name"
-            android:textColor="@android:color/white"
-            android:layout_gravity="center"
-            android:textSize="30sp"
-            android:fontFamily="@font/magnifika"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+<!--        <TextView-->
+<!--            android:text="@string/app_name"-->
+<!--            android:textColor="@android:color/white"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:textSize="30sp"-->
+<!--            android:fontFamily="@font/magnifika"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"/>-->
 
-    </LinearLayout>
+<!--    </LinearLayout>-->
 
     <ImageView
         android:id="@+id/icon"
@@ -44,8 +44,8 @@
         android:textColor="@android:color/white"
         app:layout_alignSelf="flex_start"
         android:layout_margin="8dp"
-        android:background="@drawable/border_button"
-        android:layout_width="match_parent"
+        android:background="@drawable/button_login"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"/>
 
 </com.google.android.flexbox.FlexboxLayout>
