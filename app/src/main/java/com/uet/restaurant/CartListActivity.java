@@ -100,7 +100,7 @@ public class CartListActivity extends AppCompatActivity {
                     else {
                         btn_order.setText(getString(R.string.place_order));
                         btn_order.setEnabled(true);
-                        btn_order.setBackgroundResource(R.color.colorPrimary);
+//                        btn_order.setBackgroundResource(R.color.colorPrimary);
 
                         MyCartAdapter adapter = new MyCartAdapter(CartListActivity.this, cartItems);
                         recycler_cart.setAdapter(adapter);
@@ -137,7 +137,7 @@ public class CartListActivity extends AppCompatActivity {
                         else {
                             btn_order.setText(getString(R.string.place_order));
                             btn_order.setEnabled(true);
-                            btn_order.setBackgroundResource(R.color.colorPrimary);
+//                            btn_order.setBackgroundResource(R.color.colorPrimary);
                         }
 
                         txt_final_price.setText(String.valueOf(aLong));

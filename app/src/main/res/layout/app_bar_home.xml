@@ -22,6 +22,21 @@
 
     <include layout="@layout/content_home" />
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="250dp">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_add_to_cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            android:background="@drawable/gradient_color"
+            android:layout_gravity="right|center_vertical"
+            android:src="@drawable/ic_shopping_cart_white_24dp" />
+    </FrameLayout>
+
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

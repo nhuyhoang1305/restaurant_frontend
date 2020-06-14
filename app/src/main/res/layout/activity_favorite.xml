@@ -29,10 +29,15 @@
     <LinearLayout
         android:padding="8dp"
         android:background="@color/divider"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="25dp"
+            android:src="@mipmap/ic_star"
+            android:paddingRight="8dp"
+            android:layout_gravity="center_vertical"/>
         <TextView
             android:text="@string/menu_fav"
             android:fontFamily="@font/nunitobold"

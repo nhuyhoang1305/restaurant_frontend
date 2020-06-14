@@ -21,12 +21,17 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.gson.Gson;
 import com.uet.restaurant.Adapter.RestaurantAdapter;
 import com.uet.restaurant.Adapter.RestaurantSliderAdapter;
 import com.uet.restaurant.Common.Common;
+import com.uet.restaurant.Database.CartDataSource;
+import com.uet.restaurant.Database.CartItem;
 import com.uet.restaurant.Model.EventBus.RestaurantLoadEvent;
+import com.uet.restaurant.Model.Food;
 import com.uet.restaurant.Model.Restaurant;
 import com.uet.restaurant.Retrofit.IRestaurantAPI;
 import com.uet.restaurant.Retrofit.RetrofitClient;
@@ -49,11 +54,9 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import ss.com.bannerslider.Slider;
 
-public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private static final String TAG = HomeActivity.class.getSimpleName();
-
     private TextView txt_user_name, txt_user_phone;
 
     @BindView(R.id.banner_slider)
@@ -84,6 +87,7 @@ public class HomeActivity extends AppCompatActivity
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setItemIconTintList(null);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
@@ -138,6 +142,7 @@ public class HomeActivity extends AppCompatActivity
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recycler_restaurant.setLayoutManager(layoutManager);
         recycler_restaurant.addItemDecoration(new DividerItemDecoration(this, layoutManager.getOrientation()));
+
     }
 
     private void init() {
@@ -166,7 +171,6 @@ public class HomeActivity extends AppCompatActivity
     }
 
 
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -186,6 +190,7 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         // Handle navigation view item clicks here.
+
         int id =  menuItem.getItemId();
         if (id == R.id.nav_log_out){
             signOut();

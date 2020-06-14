@@ -23,67 +23,102 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_cart"
-        android:layout_below="@id/app_bar"
-        android:layout_above="@id/layout_price"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
-        android:layout_margin="8dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_above="@id/layout_price"
+        android:layout_below="@id/app_bar"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="46dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="-22dp" />
 
     <LinearLayout
         android:id="@+id/layout_price"
         android:layout_alignParentBottom="true"
-        android:orientation="vertical"
         android:layout_margin="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal"
+            android:weightSum="10">
 
             <LinearLayout
-                android:padding="8dp"
-                android:weightSum="8"
+                android:layout_width="250dp"
+                android:layout_height="71dp"
+                android:layout_gravity="center_vertical"
                 android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:padding="8dp"
+                android:weightSum="6">
 
-                <TextView
-                    android:text="Total Cost"
-                    android:textSize="16sp"
-                    android:textColor="#151515"
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="2"
+                    android:src="@mipmap/ic_cart_round" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="3dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:fontFamily="@font/nunitobold"
+                        android:text="Total Cost"
+                        android:textColor="#151515"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/txt_final_price"
+                        android:layout_width="133dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:fontFamily="@font/nunitobold"
+                        android:text="0"
+                        android:textColor="@color/button_color"
+                        android:textSize="25sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right">
+
+                <Button
+                    android:id="@+id/btn_order"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="3"
+                    android:background="@drawable/gradient_color"
                     android:fontFamily="@font/nunitobold"
-                    android:layout_weight="4"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:id="@+id/txt_final_price"
-                    android:text="0"
-                    android:textSize="17sp"
-                    android:textColor="@color/button_color"
-                    android:fontFamily="@font/nunitobold"
-                    android:gravity="right"
-                    android:layout_weight="4"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
-
+                    android:text="ORDER"
+                    android:textColor="@android:color/white" />
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
 
-        <Button
-            android:id="@+id/btn_order"
-            android:text="ORDER"
-            android:textColor="@android:color/white"
-            android:fontFamily="@font/nunitobold"
-            android:background="@drawable/gradient_color"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+<!--        <Button-->
+<!--            android:id="@+id/btn_order"-->
+<!--            android:text="ORDER"-->
+<!--            android:textColor="@android:color/white"-->
+<!--            android:fontFamily="@font/nunitobold"-->
+<!--            android:background="@drawable/gradient_color"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:layout_marginBottom="8dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content" />-->
 
     </LinearLayout>
 
