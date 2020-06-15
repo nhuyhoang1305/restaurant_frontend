@@ -163,35 +163,6 @@ public class SplashScreen extends AppCompatActivity {
         mDialog = new SpotsDialog.Builder().setContext(this).setCancelable(false).build();
         mIRestaurantAPI = RetrofitClient.getInstance(Common.API_RESTAURANT_ENDPOINT)
                 .create(IRestaurantAPI.class);
-//        user = FirebaseAuth.getInstance().getCurrentUser();
-//        if (user != null){
-//            Map<String, String> headers = new HashMap<>();
-//            headers.put("Authorization", Common.buildJWT(Common.API_KEY));
-//            mCompositeDisposable.add(mIRestaurantAPI.getUser(headers)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(userModel -> {
-//                        if (userModel.isSuccess()){ //nếu người dùng tồn tại trong db, chạy thẳng vào home
-//
-//                            Common.currentUser = userModel.getResult().get(0);
-//                            Intent intent = new Intent(SplashScreen.this, HomeActivity.class);
-//                            startActivity(intent);
-//                            finish();
-//                        }
-//                        else{ // nếu người dùng không tồn tại trong db, chạy vào UpdateInfo để đăng ký
-//                            Intent intent = new Intent(SplashScreen.this, MainActivity.class);
-//                            startActivity(intent);
-//                            finish();
-//                        }
-//                        mDialog.dismiss();
-//                    },
-//                        throwable -> {
-//                            mDialog.dismiss();
-//                            Toast.makeText(SplashScreen.this, "[GET USER API]" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
-//                        }));
-//        }
-//        else{
-//
-//        }
+
     }
 }

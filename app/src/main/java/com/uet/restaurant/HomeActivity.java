@@ -31,6 +31,8 @@ import com.uet.restaurant.Common.Common;
 import com.uet.restaurant.Database.CartDataSource;
 import com.uet.restaurant.Database.CartItem;
 import com.uet.restaurant.Model.EventBus.RestaurantLoadEvent;
+import com.uet.restaurant.Model.Favorite;
+import com.uet.restaurant.Model.FavoriteOnlyId;
 import com.uet.restaurant.Model.Food;
 import com.uet.restaurant.Model.Restaurant;
 import com.uet.restaurant.Retrofit.IRestaurantAPI;
@@ -41,6 +43,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -111,7 +114,25 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         initView();
 
         loadRestaurant();
+        loadFav();
 
+    }
+
+    private void loadFav() {
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("Authorization", Common.buildJWT(Common.API_KEY));
+        mCompositeDisposable.add(mIRestaurantAPI.getFavoriteByUser(headers)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(favoriteModel -> {
+                    if (favoriteModel.isSuccess()){
+                        Common.currentFavOfRestaurant = new ArrayList<>();
+                        for (Favorite favorite : favoriteModel.getResult()){
+                            Common.currentFavOfRestaurant.add(new FavoriteOnlyId(favorite.getFoodId()));
+                        }
+                    }
+                        },
+                        throwable -> {}));
     }
 
     private void loadRestaurant() {

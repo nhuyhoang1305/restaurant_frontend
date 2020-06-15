@@ -1,6 +1,14 @@
 package com.uet.restaurant.Model;
 
+import com.uet.restaurant.Common.Common;
+
 public class Favorite {
+
+    public String convert(String _image){
+        String words[] = _image.split("/");
+        return new StringBuilder().append(Common.API_RESTAURANT_ENDPOINT)
+                .append(words[3]).toString();
+    }
 
     private String fbid;
 
@@ -41,7 +49,7 @@ public class Favorite {
     }
 
     public String getFoodImage() {
-        return foodImage;
+        return convert(foodImage);
     }
 
     public void setFoodImage(String foodImage) {

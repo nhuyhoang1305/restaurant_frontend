@@ -234,6 +234,7 @@ public class PlaceOrderActivity extends AppCompatActivity implements DatePickerD
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(cartItems -> {
+
                         // Get Order Number from Server
                         HashMap<String, String> headers = new HashMap<>();
                         headers.put("Authorization", Common.buildJWT(Common.API_KEY));
