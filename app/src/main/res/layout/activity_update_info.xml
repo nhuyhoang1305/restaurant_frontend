@@ -25,29 +25,39 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp">
+
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@mipmap/ic_user_foreground"
+            android:layout_gravity="center_vertical"/>
         
         <TextView
             android:text="Thông tin người dùng"
             android:fontFamily="@font/nunitobold"
             android:textColor="@color/button_color"
             android:textSize="16sp"
+            android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
     </LinearLayout>
 
     <androidx.cardview.widget.CardView
-        android:layout_margin="8dp"
+        android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <LinearLayout
             android:orientation="vertical"
-            android:padding="8dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="30dp"
+            android:paddingTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -68,12 +78,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
-            <View
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:background="@android:color/darker_gray"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -96,15 +101,36 @@
 
     </androidx.cardview.widget.CardView>
 
-    <Button
-        android:id="@+id/btn_update"
-        android:text="UPDATE"
-        android:textColor="@android:color/white"
-        android:fontFamily="@font/nunitobold"
-        android:layout_margin="8dp"
-        app:layout_alignSelf="flex_start"
-        android:background="@drawable/gradient_color"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:gravity="right">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/btn_cancel"
+                android:text="CANCEL"
+                android:textColor="@android:color/holo_red_light"
+                android:fontFamily="@font/nunitobold"
+                android:layout_margin="8dp"
+                app:layout_alignSelf="flex_start"
+                android:background="@drawable/boder_button_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <Button
+                android:id="@+id/btn_update"
+                android:text="UPDATE"
+                android:textColor="@android:color/white"
+                android:fontFamily="@font/nunitobold"
+                android:layout_margin="8dp"
+                app:layout_alignSelf="flex_start"
+                android:background="@drawable/gradient_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
 
 </LinearLayout>

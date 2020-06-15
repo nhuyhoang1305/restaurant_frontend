@@ -16,16 +16,22 @@
         android:layout_height="wrap_content"/>
 
     <LinearLayout
-        android:padding="16dp"
-        android:orientation="vertical"
+        android:padding="7dp"
+        android:orientation="horizontal"
         android:background="@color/divider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@mipmap/ic_restaurant_foreground"
+            android:layout_gravity="center_vertical"/>
 
         <TextView
             android:text="@string/app_name"
             android:textColor="@color/button_color"
             android:fontFamily="@font/nunitobold"
+            android:layout_gravity="center"
             android:textSize="16sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>

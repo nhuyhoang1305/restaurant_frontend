@@ -3,11 +3,13 @@
 
     <base-config cleartextTrafficPermitted="true">
         <trust-anchors>
-            <certificates src="system" />
+            <certificates src="system"/>
         </trust-anchors>
     </base-config>
 
+
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">http://192.168.0.105:3000/</domain>
+        <domain includeSubdomains="true">192.168.1.5</domain>
     </domain-config>
+
 </network-security-config>

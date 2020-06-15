@@ -33,19 +33,21 @@
          -->
         <com.flaviofaria.kenburnsview.KenBurnsView
             android:id="@+id/img_restaurant"
-            android:scaleType="centerCrop"
             android:layout_width="match_parent"
-            android:layout_height="150dp" />
+            android:layout_height="150dp"
+            android:scaleType="centerCrop" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:background="@color/divider"
-            android:padding="16dp">
+            android:paddingLeft="16dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="25dp">
 
             <TextView
-                android:text="Hãy chọn theo sở thích của bạn"
+                android:text="MENU"
                 android:textSize="16sp"
                 android:textColor="@color/button_color"
                 android:fontFamily="@font/nunitobold"
@@ -65,16 +67,14 @@
     </LinearLayout>
 
     <FrameLayout
-        android:layout_gravity="bottom|end"
+        android:layout_gravity="center|center_vertical"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <!--
-        https://github.com/nex3z/NotificationBadge#usage
-        -->
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="420dp">
+
         <com.nex3z.notificationbadge.NotificationBadge
             android:id="@+id/badge"
-            android:layout_gravity="top|right"
-            app:nbMaxTextLength="2"
+            android:layout_gravity="bottom|right"
             android:layout_width="28dp"
             android:layout_height="28dp"
             />
@@ -84,8 +84,8 @@
             android:layout_margin="@dimen/fab_margin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrice"
-            android:src="@drawable/ic_shopping_cart_white_24dp"
+            android:backgroundTint="@color/white"
+            android:src="@drawable/ic_shopping_cart_button_color_24dp"
             />
     </FrameLayout>
 

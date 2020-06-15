@@ -49,130 +49,121 @@
 
                     <LinearLayout
                         android:orientation="horizontal"
-                        android:weightSum="10"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="3dp">
+
                         <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="2">
+                            android:layout_width="81dp"
+                            android:layout_height="wrap_content">
+
                             <ImageView
-                                android:src="@drawable/ic_price"
-                                android:layout_gravity="center_vertical"
-                                android:layout_weight="1"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_price" />
 
                             <TextView
-                                android:text="Price"
-                                android:textSize="15sp"
-                                android:layout_weight="1"
-                                android:layout_gravity="center_vertical"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:paddingLeft="5dp"
+                                android:text="Price"
+                                android:textSize="15sp" />
                         </LinearLayout>
-
                         <TextView
                             android:id="@+id/txt_total_cash"
                             android:text="200.0"
+                            android:background="@drawable/border_hidden"
+                            android:padding="4dp"
                             android:textSize="15sp"
                             android:layout_gravity="center_vertical"
-                            android:layout_weight="8"
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
-
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:weightSum="10">
-                        <View
-                            android:background="@android:color/white"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="6.5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="1dip"/>
-                        <View
-                            android:background="@android:color/darker_gray"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="3.5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="1dip"/>
-                    </LinearLayout>
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:weightSum="10">-->
+<!--                        <View-->
+<!--                            android:background="@android:color/white"-->
+<!--                            android:layout_gravity="center_vertical"-->
+<!--                            android:layout_weight="6.7"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="1dip"/>-->
+<!--                        <View-->
+<!--                            android:background="@android:color/darker_gray"-->
+<!--                            android:layout_gravity="center_vertical"-->
+<!--                            android:layout_weight="3.3"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="1dip"/>-->
+<!--                    </LinearLayout>-->
 
 
                     <LinearLayout
                         android:orientation="horizontal"
-                        android:weightSum="10"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="3dp">
+
                         <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="2">
+                            android:layout_width="81dp"
+                            android:layout_height="wrap_content">
+
                             <ImageView
-                                android:src="@drawable/ic_local_phone_black_24dp"
-                                android:layout_gravity="center_vertical"
-                                android:layout_weight="1"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_local_phone_black_24dp" />
 
                             <TextView
-                                android:text="Phone"
-                                android:textSize="15sp"
-                                android:layout_gravity="center_vertical"
-                                android:layout_weight="1"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:paddingLeft="5dp"
+                                android:text="Phone"
+                                android:textSize="15sp" />
                         </LinearLayout>
-
                         <TextView
                             android:id="@+id/txt_user_phone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:background="@drawable/border_hidden"
+                            android:padding="4dp"
                             android:text="+84929417425"
-                            android:textSize="15sp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="8"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content" />
+                            android:textSize="15sp" />
 
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:weightSum="10">
-                        <View
-                            android:background="@android:color/white"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="6.5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="1dip"/>
-                        <View
-                            android:background="@android:color/darker_gray"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="3.5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="1dip"/>
-                    </LinearLayout>
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:weightSum="10">-->
+<!--                        <View-->
+<!--                            android:background="@android:color/white"-->
+<!--                            android:layout_gravity="center_vertical"-->
+<!--                            android:layout_weight="6.5"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="1dip"/>-->
+<!--                        <View-->
+<!--                            android:background="@android:color/darker_gray"-->
+<!--                            android:layout_gravity="center_vertical"-->
+<!--                            android:layout_weight="3.5"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="1dip"/>-->
+<!--                    </LinearLayout>-->
 
                     <LinearLayout
                         android:orientation="horizontal"
-                        android:weightSum="10"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="3dp">
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="81dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="2"
                             android:layout_gravity="center">
                             <ImageView
                                 android:src="@drawable/ic_date"
-                                android:layout_gravity="center_vertical"
-                                android:layout_weight="1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"  />
 
@@ -180,21 +171,19 @@
                                 android:text="Date"
                                 android:textSize="15sp"
                                 android:layout_gravity="center_vertical"
-                                android:layout_weight="1"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content"
+                                android:paddingLeft="5dp"/>
                         </LinearLayout>
-
 
                         <EditText
                             android:id="@+id/edt_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
                             android:hint="Select Date"
                             android:inputType="none"
-                            android:textSize="15sp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="8"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"/>
+                            android:textSize="15sp" />
 
                     </LinearLayout>
 
@@ -202,13 +191,24 @@
 
             </androidx.cardview.widget.CardView>
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:fontFamily="@font/nunitobold"
-                android:padding="8dp"
-                android:text="Address"
-                android:textSize="20sp" />
+                android:layout_height="wrap_content"
+                android:padding="10dp">
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@mipmap/ic_pin"
+                    android:layout_gravity="center_vertical"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/nunitobold"
+                    android:text="Address"
+                    android:paddingLeft="10dp"
+                    android:textSize="20sp" />
+            </LinearLayout>
 
             <androidx.cardview.widget.CardView
                 android:layout_margin="8dp"
@@ -276,29 +276,32 @@
                             android:textSize="12sp"
                             android:layout_marginRight="6dp"
                             android:layout_weight="0.3"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp" />
+                            android:layout_width="16dp"
+                            android:layout_height="16dp" />
 
                     </LinearLayout>
-
-<!--                    <View-->
-<!--                        android:background="@android:color/darker_gray"-->
-<!--                        android:layout_marginTop="8dp"-->
-<!--                        android:layout_marginBottom="8dp"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="1dip" />-->
-
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:text="Payment"
-                android:textSize="20sp"
-                android:fontFamily="@font/nunitobold"
-                android:padding="8dp"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp" />
+                android:layout_height="wrap_content"
+                android:padding="10dp">
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@mipmap/ic_buy"
+                    android:layout_gravity="center_vertical"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/nunitobold"
+                    android:text="Payment"
+                    android:textSize="20sp"
+                    android:paddingLeft="10dp"/>
+            </LinearLayout>
 
             <androidx.cardview.widget.CardView
                 android:layout_margin="8dp"
@@ -329,17 +332,94 @@
             </androidx.cardview.widget.CardView>
 
         </LinearLayout>
-
-        <Button
-            android:id="@+id/btn_proceed"
+        <LinearLayout
+            android:id="@+id/layout_price"
             android:layout_alignParentBottom="true"
-            android:background="@drawable/gradient_color"
-            android:text="Proceed"
-            android:textColor="@android:color/white"
-            android:fontFamily="@font/nunitobold"
             android:layout_margin="8dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <LinearLayout
+                    android:layout_width="250dp"
+                    android:layout_height="71dp"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="8dp"
+                    android:weightSum="6">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="2"
+                        android:src="@mipmap/ic_cart_round" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingLeft="3dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:fontFamily="@font/nunitobold"
+                            android:text="Price"
+                            android:textColor="#151515"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:id="@+id/txt_place_total_price"
+                            android:layout_width="133dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:fontFamily="@font/nunitobold"
+                            android:text="0.0"
+                            android:textColor="@color/button_color"
+                            android:textSize="25sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right">
+
+                    <Button
+                        android:id="@+id/btn_proceed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_weight="3"
+                        android:background="@drawable/gradient_color"
+                        android:fontFamily="@font/nunitobold"
+                        android:text="Proceed"
+                        android:textColor="@android:color/white" />
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+
+<!--        <Button-->
+<!--            android:id="@+id/btn_proceed"-->
+<!--            android:layout_alignParentBottom="true"-->
+<!--            android:background="@drawable/gradient_color"-->
+<!--            android:text="Proceed"-->
+<!--            android:textColor="@android:color/white"-->
+<!--            android:fontFamily="@font/nunitobold"-->
+<!--            android:layout_margin="8dp"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content" />-->
 
     </RelativeLayout>
 

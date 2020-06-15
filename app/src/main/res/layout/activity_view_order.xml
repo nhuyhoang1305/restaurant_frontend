@@ -25,15 +25,20 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
-        android:padding="8dp"
+        android:padding="10dp"
         android:background="@color/divider"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@mipmap/ic_order_history_foreground"
+            android:layout_gravity="center_vertical"/>
         <TextView
             android:text="@string/your_order"
-            android:textSize="16sp"
+            android:textSize="20sp"
+            android:layout_gravity="center_vertical"
             android:textColor="@color/button_color"
             android:fontFamily="@font/nunitobold"
             android:layout_width="wrap_content"

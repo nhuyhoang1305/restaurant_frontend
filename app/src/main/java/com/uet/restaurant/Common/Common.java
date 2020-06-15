@@ -26,7 +26,7 @@ import java.util.Set;
 
 public class Common {
 
-    public static final String API_RESTAURANT_ENDPOINT = "http://192.168.0.105:3000/";
+    public static final String API_RESTAURANT_ENDPOINT = "http://192.168.1.5:3000/";
 
 
     // later, secure it with Firebase Remote Config

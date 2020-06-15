@@ -38,6 +38,8 @@ import com.uet.restaurant.Model.Size;
 import com.uet.restaurant.Retrofit.IRestaurantAPI;
 import com.uet.restaurant.Retrofit.RetrofitClient;
 
+import com.uet.restaurant.Model.EventBus.SendTotalCashEvent;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -72,11 +74,13 @@ public class FoodDetailActivity extends AppCompatActivity {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+    @BindView(R.id.txt_place_total_price)
+    TextView txt_place_total_price;
+
     private IRestaurantAPI mIRestaurantAPI;
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     private AlertDialog mDialog;
     private CartDataSource mCartDataSource;
-
     private Food selectedFood;
     private Double originalPrice;
 
@@ -168,7 +172,6 @@ public class FoodDetailActivity extends AppCompatActivity {
         Log.d(TAG, "displayFoodDetail: Name: " + event.getFood().getName());
         if (event.isSuccess()) {
             toolbar.setTitle(event.getFood().getName());
-
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -291,6 +294,11 @@ public class FoodDetailActivity extends AppCompatActivity {
         calculatePrice();
     }
 
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void setTotalCash(SendTotalCashEvent event) {
+        txt_place_total_price.setText(String.valueOf(event.getCash()));
+    }
+
     private void calculatePrice() {
         Log.d(TAG, "calculatePrice: called!!");
         extraPrice = 0.0;
@@ -302,5 +310,7 @@ public class FoodDetailActivity extends AppCompatActivity {
         newPrice = originalPrice + extraPrice;
 
         txt_money.setText(String.valueOf(newPrice));
+        txt_place_total_price.setText(String.valueOf(newPrice));
+
     }
 }

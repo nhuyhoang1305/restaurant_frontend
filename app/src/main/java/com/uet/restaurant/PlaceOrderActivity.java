@@ -89,6 +89,8 @@ public class PlaceOrderActivity extends AppCompatActivity implements DatePickerD
     Button btn_proceed;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.txt_place_total_price)
+    TextView txt_place_total_price;
 
     private IRestaurantAPI mIRestaurantAPI;
     private IBraintreeAPI mIBraintreeAPI;
@@ -535,5 +537,7 @@ public class PlaceOrderActivity extends AppCompatActivity implements DatePickerD
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void setTotalCash(SendTotalCashEvent event) {
         txt_total_cash.setText(String.valueOf(event.getCash()));
+        txt_place_total_price.setText(String.valueOf(event.getCash()));
+
     }
 }
