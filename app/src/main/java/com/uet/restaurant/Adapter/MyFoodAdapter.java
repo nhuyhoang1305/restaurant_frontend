@@ -109,7 +109,7 @@ public class MyFoodAdapter extends RecyclerView.Adapter<MyFoodAdapter.MyViewHold
                             .subscribe(favoriteModel -> {
 
                                 if (favoriteModel.isSuccess() && favoriteModel.getMessage().contains("Success")) {
-                                    fav.setImageResource(R.mipmap.ic_heart_fav);
+                                    fav.setImageResource(R.drawable.ic_favorite_border_button_color_24dp);
                                     fav.setTag(false);
                                     if (Common.currentFavOfRestaurant != null) {
                                         Common.removeFavorite(mFoodList.get(position).getId());
@@ -133,7 +133,7 @@ public class MyFoodAdapter extends RecyclerView.Adapter<MyFoodAdapter.MyViewHold
                             .subscribe(favoriteModel -> {
 
                                 if (favoriteModel.isSuccess() && favoriteModel.getMessage().contains("Success")) {
-                                    fav.setImageResource(R.mipmap.ic_heart);
+                                    fav.setImageResource(R.drawable.ic_favorite_button_color_24dp);
                                     fav.setTag(true);
                                     if (Common.currentFavOfRestaurant != null) {
                                         Common.currentFavOfRestaurant.add(new FavoriteOnlyId(mFoodList.get(position).getId()));
