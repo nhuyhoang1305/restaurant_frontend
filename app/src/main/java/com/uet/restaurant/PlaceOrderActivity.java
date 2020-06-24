@@ -29,6 +29,7 @@ import com.uet.restaurant.Common.Common;
 import com.uet.restaurant.Database.CartDataSource;
 import com.uet.restaurant.Database.CartDatabase;
 import com.uet.restaurant.Database.LocalCartDataSource;
+import com.uet.restaurant.Model.Discount;
 import com.uet.restaurant.Model.EventBus.SendTotalCashEvent;
 import com.uet.restaurant.Model.FCMResponse;
 import com.uet.restaurant.Model.FCMSendData;
@@ -67,6 +68,12 @@ public class PlaceOrderActivity extends AppCompatActivity implements DatePickerD
     private static final String TAG = PlaceOrderActivity.class.getSimpleName();
     private static final int REQUEST_BRAINTREE_CODE = 7777;
 
+    @BindView(R.id.btn_apply)
+    Button btn_apply;
+    @BindView(R.id.txt_discount_cash)
+    TextView txt_discount_cash;
+    @BindView(R.id.edt_discount_code)
+    EditText edt_discount_code;
     @BindView(R.id.edt_date)
     EditText edt_date;
     @BindView(R.id.txt_total_cash)
@@ -102,6 +109,9 @@ public class PlaceOrderActivity extends AppCompatActivity implements DatePickerD
 
     private boolean isSelectedDate = false;
     private boolean isAddNewAddress = false;
+    private boolean isUseDiscount = false;
+
+    private String discountUse = "";
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -221,6 +231,60 @@ public class PlaceOrderActivity extends AppCompatActivity implements DatePickerD
                 getOrderNumber(true);
             }
         });
+
+        btn_apply.setOnClickListener(view -> {
+            mDialog.show();
+
+            HashMap<String, String> headers = new HashMap<>();
+            headers.put("Authorization", Common.buildJWT(Common.API_KEY));
+            mCompositeDisposable.add(mIRestaurantAPI.checkDiscount(headers,
+                    edt_discount_code.getText().toString())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            discountModel -> {
+                                if (discountModel.isSuccess()){
+                                    mCompositeDisposable.add(mIRestaurantAPI.getDiscount(headers,
+                                            edt_discount_code.getText().toString())
+                                            .subscribeOn(Schedulers.io())
+                                            .observeOn(AndroidSchedulers.mainThread())
+                                            .subscribe(
+                                                    discountMode1l -> {
+                                                        if (discountMode1l.isSuccess()){
+                                                            Discount discount = discountMode1l.getResult().get(0);
+                                                            Double totalCash = Double.valueOf(txt_total_cash.getText().toString());
+                                                            Double discountValue = (totalCash*discount.getValue())/100;
+                                                            Double finishCash = totalCash - discountValue;
+                                                            txt_discount_cash.setText(new StringBuilder("(-")
+                                                            .append(discount.getValue())
+                                                            .append("%)"));
+                                                            txt_discount_cash.setVisibility(View.VISIBLE);
+                                                            txt_total_cash.setText(new StringBuilder("").append(finishCash));
+                                                            txt_place_total_price.setText(new StringBuilder("").append(finishCash));
+                                                            isUseDiscount = true;
+                                                            discountUse = edt_discount_code.getText().toString();
+                                                        }
+                                                        mDialog.dismiss();
+                                                    },
+                                                    throwable -> {
+                                                        Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                                                        mDialog.dismiss();
+                                                    }
+                                            ));
+                                }
+                                else{
+                                    Toast.makeText(this, discountModel.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            },
+                            throwable -> {
+                                Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                                mDialog.dismiss();
+                            }
+                    )
+            );
+
+        });
+
     }
 
     private void getOrderNumber(boolean isOnlinePayment) {
@@ -262,52 +326,72 @@ public class PlaceOrderActivity extends AppCompatActivity implements DatePickerD
                                                 .subscribe(updateOrderModel -> {
 
                                                     if (updateOrderModel.isSuccess()) {
-                                                        // After update item, we will clear cart and show message success
-                                                        mCartDataSource.cleanCart(Common.currentUser.getFbid(),
-                                                                Common.currentRestaurant.getId())
-                                                                .subscribeOn(Schedulers.io())
-                                                                .observeOn(AndroidSchedulers.mainThread())
-                                                                .subscribe(new SingleObserver<Integer>() {
-                                                                    @Override
-                                                                    public void onSubscribe(Disposable d) {
 
-                                                                    }
+                                                        if (isUseDiscount && !TextUtils.isEmpty(discountUse)){
+                                                            mCompositeDisposable.add(
+                                                                    mIRestaurantAPI.insertDiscount(headers,
+                                                                            discountUse)
+                                                                    .subscribeOn(Schedulers.io())
+                                                                    .observeOn(AndroidSchedulers.mainThread())
+                                                                    .subscribe(
+                                                                            discountModel -> {
+                                                                                if (discountModel.isSuccess()){
+                                                                                    // After update item, we will clear cart and show message success
+                                                                                    mCartDataSource.cleanCart(Common.currentUser.getFbid(),
+                                                                                            Common.currentRestaurant.getId())
+                                                                                            .subscribeOn(Schedulers.io())
+                                                                                            .observeOn(AndroidSchedulers.mainThread())
+                                                                                            .subscribe(new SingleObserver<Integer>() {
+                                                                                                @Override
+                                                                                                public void onSubscribe(Disposable d) {
 
-                                                                    @Override
-                                                                    public void onSuccess(Integer integer) {
-                                                                        //Create Notification
-                                                                        Map<String, String> dataSend = new HashMap<>();
-                                                                        dataSend.put(Common.NOTIFIC_TITLE, "New Order");
-                                                                        dataSend.put(Common.NOTIFIC_CONTENT, "You have new order " + createOrderModel.getResult().get(0).getOrderNumber());
+                                                                                                }
 
-                                                                        FCMSendData sendData = new FCMSendData(Common.createTopicSender(Common.getTopicChannel(
-                                                                                Common.currentRestaurant.getId()
-                                                                        )), dataSend);
+                                                                                                @Override
+                                                                                                public void onSuccess(Integer integer) {
+                                                                                                    //Create Notification
+                                                                                                    Map<String, String> dataSend = new HashMap<>();
+                                                                                                    dataSend.put(Common.NOTIFIC_TITLE, "New Order");
+                                                                                                    dataSend.put(Common.NOTIFIC_CONTENT, "You have new order " + createOrderModel.getResult().get(0).getOrderNumber());
 
-                                                                        mCompositeDisposable.add(ifcmService.sendNotificiaton(sendData)
-                                                                        .subscribeOn(Schedulers.io())
-                                                                        .observeOn(AndroidSchedulers.mainThread())
-                                                                        .subscribe(fcmResponse -> {
-                                                                            Toast.makeText(PlaceOrderActivity.this, "Order :Placed", Toast.LENGTH_SHORT).show();
-                                                                            Intent homeActivity = new Intent(PlaceOrderActivity.this, HomeActivity.class);
-                                                                            homeActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                                            startActivity(homeActivity);
-                                                                            finish();
-                                                                        }, throwable -> {
-                                                                            Toast.makeText(PlaceOrderActivity.this, "Order Placed but can't send notification to server", Toast.LENGTH_SHORT).show();
-                                                                            Intent homeActivity = new Intent(PlaceOrderActivity.this, HomeActivity.class);
-                                                                            homeActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                                            startActivity(homeActivity);
-                                                                            finish();
-                                                                        }));
+                                                                                                    FCMSendData sendData = new FCMSendData(Common.createTopicSender(Common.getTopicChannel(
+                                                                                                            Common.currentRestaurant.getId()
+                                                                                                    )), dataSend);
 
-                                                                    }
+                                                                                                    mCompositeDisposable.add(ifcmService.sendNotificiaton(sendData)
+                                                                                                            .subscribeOn(Schedulers.io())
+                                                                                                            .observeOn(AndroidSchedulers.mainThread())
+                                                                                                            .subscribe(fcmResponse -> {
+                                                                                                                Toast.makeText(PlaceOrderActivity.this, "Order :Placed", Toast.LENGTH_SHORT).show();
+                                                                                                                Intent homeActivity = new Intent(PlaceOrderActivity.this, HomeActivity.class);
+                                                                                                                homeActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                                                                                startActivity(homeActivity);
+                                                                                                                finish();
+                                                                                                            }, throwable -> {
+                                                                                                                Toast.makeText(PlaceOrderActivity.this, "Order Placed but can't send notification to server", Toast.LENGTH_SHORT).show();
+                                                                                                                Intent homeActivity = new Intent(PlaceOrderActivity.this, HomeActivity.class);
+                                                                                                                homeActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                                                                                startActivity(homeActivity);
+                                                                                                                finish();
+                                                                                                            }));
 
-                                                                    @Override
-                                                                    public void onError(Throwable e) {
-                                                                        Toast.makeText(PlaceOrderActivity.this, "[CLEAR CART]" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                                                    }
-                                                                });
+                                                                                                }
+
+                                                                                                @Override
+                                                                                                public void onError(Throwable e) {
+                                                                                                    Toast.makeText(PlaceOrderActivity.this, "[CLEAR CART]" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                                                                                }
+                                                                                            });
+                                                                                }
+                                                                            },
+                                                                            throwable -> {
+                                                                                Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                                                                            }
+                                                                    )
+
+                                                            );
+                                                        }
+
                                                     }
 
                                                     if (mDialog.isShowing())
@@ -413,51 +497,72 @@ public class PlaceOrderActivity extends AppCompatActivity implements DatePickerD
                                                                         .subscribe(updateOrderModel -> {
 
                                                                             if (updateOrderModel.isSuccess()) {
-                                                                                // After update item, we will clear cart and show message success
-                                                                                mCartDataSource.cleanCart(Common.currentUser.getFbid(),
-                                                                                        Common.currentRestaurant.getId())
-                                                                                        .subscribeOn(Schedulers.io())
-                                                                                        .observeOn(AndroidSchedulers.mainThread())
-                                                                                        .subscribe(new SingleObserver<Integer>() {
-                                                                                            @Override
-                                                                                            public void onSubscribe(Disposable d) {
 
-                                                                                            }
+                                                                                if (isUseDiscount && !TextUtils.isEmpty(discountUse)){
+                                                                                    mCompositeDisposable.add(
+                                                                                            mIRestaurantAPI.insertDiscount(headers,
+                                                                                                    discountUse)
+                                                                                                    .subscribeOn(Schedulers.io())
+                                                                                                    .observeOn(AndroidSchedulers.mainThread())
+                                                                                                    .subscribe(
+                                                                                                            discountModel -> {
+                                                                                                                if (discountModel.isSuccess()){
+                                                                                                                    // After update item, we will clear cart and show message success
+                                                                                                                    mCartDataSource.cleanCart(Common.currentUser.getFbid(),
+                                                                                                                            Common.currentRestaurant.getId())
+                                                                                                                            .subscribeOn(Schedulers.io())
+                                                                                                                            .observeOn(AndroidSchedulers.mainThread())
+                                                                                                                            .subscribe(new SingleObserver<Integer>() {
+                                                                                                                                @Override
+                                                                                                                                public void onSubscribe(Disposable d) {
 
-                                                                                            @Override
-                                                                                            public void onSuccess(Integer integer) {
-                                                                                                //Create Notification
-                                                                                                Map<String, String> dataSend = new HashMap<>();
-                                                                                                dataSend.put(Common.NOTIFIC_TITLE, "New Order");
-                                                                                                dataSend.put(Common.NOTIFIC_CONTENT, "You have new order " + createOrderModel.getResult().get(0).getOrderNumber());
+                                                                                                                                }
 
-                                                                                                FCMSendData sendData = new FCMSendData(Common.createTopicSender(Common.getTopicChannel(
-                                                                                                        Common.currentRestaurant.getId()
-                                                                                                )), dataSend);
+                                                                                                                                @Override
+                                                                                                                                public void onSuccess(Integer integer) {
+                                                                                                                                    //Create Notification
+                                                                                                                                    Map<String, String> dataSend = new HashMap<>();
+                                                                                                                                    dataSend.put(Common.NOTIFIC_TITLE, "New Order");
+                                                                                                                                    dataSend.put(Common.NOTIFIC_CONTENT, "You have new order " + createOrderModel.getResult().get(0).getOrderNumber());
 
-                                                                                                mCompositeDisposable.add(ifcmService.sendNotificiaton(sendData)
-                                                                                                        .subscribeOn(Schedulers.io())
-                                                                                                        .observeOn(AndroidSchedulers.mainThread())
-                                                                                                        .subscribe(fcmResponse -> {
-                                                                                                            Toast.makeText(PlaceOrderActivity.this, "Order :Placed", Toast.LENGTH_SHORT).show();
-                                                                                                            Intent homeActivity = new Intent(PlaceOrderActivity.this, HomeActivity.class);
-                                                                                                            homeActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                                                                            startActivity(homeActivity);
-                                                                                                            finish();
-                                                                                                        }, throwable -> {
-                                                                                                            Toast.makeText(PlaceOrderActivity.this, "Order Placed but can't send notification to server", Toast.LENGTH_SHORT).show();
-                                                                                                            Intent homeActivity = new Intent(PlaceOrderActivity.this, HomeActivity.class);
-                                                                                                            homeActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                                                                            startActivity(homeActivity);
-                                                                                                            finish();
-                                                                                                        }));
-                                                                                            }
+                                                                                                                                    FCMSendData sendData = new FCMSendData(Common.createTopicSender(Common.getTopicChannel(
+                                                                                                                                            Common.currentRestaurant.getId()
+                                                                                                                                    )), dataSend);
 
-                                                                                            @Override
-                                                                                            public void onError(Throwable e) {
-                                                                                                Toast.makeText(PlaceOrderActivity.this, "[CLEAR CART]" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                                                                            }
-                                                                                        });
+                                                                                                                                    mCompositeDisposable.add(ifcmService.sendNotificiaton(sendData)
+                                                                                                                                            .subscribeOn(Schedulers.io())
+                                                                                                                                            .observeOn(AndroidSchedulers.mainThread())
+                                                                                                                                            .subscribe(fcmResponse -> {
+                                                                                                                                                Toast.makeText(PlaceOrderActivity.this, "Order :Placed", Toast.LENGTH_SHORT).show();
+                                                                                                                                                Intent homeActivity = new Intent(PlaceOrderActivity.this, HomeActivity.class);
+                                                                                                                                                homeActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                                                                                                                startActivity(homeActivity);
+                                                                                                                                                finish();
+                                                                                                                                            }, throwable -> {
+                                                                                                                                                Toast.makeText(PlaceOrderActivity.this, "Order Placed but can't send notification to server", Toast.LENGTH_SHORT).show();
+                                                                                                                                                Intent homeActivity = new Intent(PlaceOrderActivity.this, HomeActivity.class);
+                                                                                                                                                homeActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                                                                                                                startActivity(homeActivity);
+                                                                                                                                                finish();
+                                                                                                                                            }));
+
+                                                                                                                                }
+
+                                                                                                                                @Override
+                                                                                                                                public void onError(Throwable e) {
+                                                                                                                                    Toast.makeText(PlaceOrderActivity.this, "[CLEAR CART]" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                                                                                                                }
+                                                                                                                            });
+                                                                                                                }
+                                                                                                            },
+                                                                                                            throwable -> {
+                                                                                                                Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                                                                                                            }
+                                                                                                    )
+
+                                                                                    );
+                                                                                }
+
                                                                             }
 
                                                                             if (mDialog.isShowing()) mDialog.dismiss();

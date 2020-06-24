@@ -25,7 +25,7 @@ public interface CartDAO {
     @Query("SELECT COUNT(*) FROM Cart WHERE fbid=:fbid AND restaurantId=:restaurantId")
     Single<Integer> countItemInCart(String fbid, int restaurantId);
 
-    @Query("SELECT SUM(foodPrice*foodQuantity) FROM Cart WHERE fbid=:fbid AND restaurantId=:restaurantId")
+    @Query("SELECT (SUM(foodPrice*foodQuantity) + foodExtraPrice) FROM Cart WHERE fbid=:fbid AND restaurantId=:restaurantId")
     Single<Long> sumPrice(String fbid, int restaurantId);
 
     @Query("SELECT * FROM Cart WHERE foodId=:foodId AND fbid=:fbid AND restaurantId=:restaurantId")

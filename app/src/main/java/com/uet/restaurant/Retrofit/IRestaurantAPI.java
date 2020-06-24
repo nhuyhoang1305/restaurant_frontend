@@ -2,6 +2,7 @@ package com.uet.restaurant.Retrofit;
 
 import com.uet.restaurant.Model.AddonModel;
 import com.uet.restaurant.Model.CreateOrderModel;
+import com.uet.restaurant.Model.DiscountModel;
 import com.uet.restaurant.Model.FavoriteModel;
 import com.uet.restaurant.Model.FavoriteOnlyIdModel;
 import com.uet.restaurant.Model.FoodModel;
@@ -30,6 +31,14 @@ import retrofit2.http.Query;
 public interface IRestaurantAPI {
 
     //============================GET=========================================
+
+    @GET("discount")
+    Observable<DiscountModel> getDiscount(@HeaderMap Map<String, String> headers,
+                                          @Query("code") String code);
+
+    @GET("checkDiscount")
+    Observable<DiscountModel> checkDiscount(@HeaderMap Map<String, String> headers,
+                                          @Query("code") String code);
 
     @GET("getkey")
     Observable<GetKeyModel> getKey(@Query("fbid") String fbid);
@@ -134,6 +143,11 @@ public interface IRestaurantAPI {
     @FormUrlEncoded
     Observable<TokenModel> updateTokenToServer(@HeaderMap Map<String, String> headers,
                                                @Field("token") String token);
+
+    @POST("applyDiscount")
+    @FormUrlEncoded
+    Observable<DiscountModel> insertDiscount(@HeaderMap Map<String, String> headers,
+                                               @Field("code") String code);
 
     //============================DELETE=========================================
     @DELETE("favorite")

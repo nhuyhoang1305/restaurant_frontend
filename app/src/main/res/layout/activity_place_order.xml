@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -77,7 +77,19 @@
                             android:padding="4dp"
                             android:textSize="15sp"
                             android:layout_gravity="center_vertical"
-                            android:layout_width="match_parent"
+                            android:layout_weight="6"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:id="@+id/txt_discount_cash"
+                            android:background="@drawable/border_hidden"
+                            android:padding="4dp"
+                            android:layout_weight="2"
+                            android:textSize="15sp"
+                            android:text="(-10%)"
+                            android:visibility="gone"
+                            android:layout_gravity="center_vertical"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content" />
                     </LinearLayout>
 
@@ -303,6 +315,7 @@
                     android:paddingLeft="10dp"/>
             </LinearLayout>
 
+
             <androidx.cardview.widget.CardView
                 android:layout_margin="8dp"
                 android:layout_width="match_parent"
@@ -331,83 +344,150 @@
 
             </androidx.cardview.widget.CardView>
 
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/layout_price"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp">
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@mipmap/sale"
+                    android:layout_gravity="center_vertical"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/nunitobold"
+                    android:text="Discount"
+                    android:textSize="20sp"
+                    android:paddingLeft="10dp"/>
+            </LinearLayout>
+
 
             <androidx.cardview.widget.CardView
+                android:layout_margin="8dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:orientation="horizontal"
-                android:weightSum="10">
+                android:layout_height="wrap_content">
 
                 <LinearLayout
-                    android:layout_width="250dp"
-                    android:layout_height="71dp"
-                    android:layout_gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="8dp"
-                    android:weightSum="6">
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_weight="2"
-                        android:src="@mipmap/ic_cart_round" />
+                    <EditText
+                        android:id="@+id/edt_discount_code"
+                        android:hint="Enter your code"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:paddingLeft="3dp">
+                        android:orientation="horizontal"
+                        android:layout_weight="2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <Button
+                            android:id="@+id/btn_apply"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:fontFamily="@font/nunitobold"
-                            android:text="Price"
-                            android:textColor="#151515"
-                            android:textSize="13sp" />
 
-                        <TextView
-                            android:id="@+id/txt_place_total_price"
-                            android:layout_width="133dp"
-                            android:layout_height="wrap_content"
                             android:layout_weight="2"
+
+                            android:background="@color/mdtp_light_gray"
                             android:fontFamily="@font/nunitobold"
-                            android:text="0.0"
-                            android:textColor="@color/button_color"
-                            android:textSize="25sp" />
+                            android:text="Apply"
+                            android:textColor="@android:color/white" />
+
+
                     </LinearLayout>
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="140dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right">
-
-                    <Button
-                        android:id="@+id/btn_proceed"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:layout_weight="3"
-                        android:background="@drawable/gradient_color"
-                        android:fontFamily="@font/nunitobold"
-                        android:text="Proceed"
-                        android:textColor="@android:color/white" />
-                </LinearLayout>
-
             </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                android:id="@+id/layout_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <LinearLayout
+                        android:layout_width="250dp"
+                        android:layout_height="71dp"
+                        android:layout_gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="8dp"
+                        android:weightSum="6">
+
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_weight="2"
+                            android:src="@mipmap/ic_cart_round" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingLeft="3dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:fontFamily="@font/nunitobold"
+                                android:text="Price"
+                                android:textColor="#151515"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:id="@+id/txt_place_total_price"
+                                android:layout_width="133dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:fontFamily="@font/nunitobold"
+                                android:text="0.0"
+                                android:textColor="@color/button_color"
+                                android:textSize="25sp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="140dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right">
+
+                        <Button
+                            android:id="@+id/btn_proceed"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:layout_weight="3"
+                            android:background="@drawable/gradient_color"
+                            android:fontFamily="@font/nunitobold"
+                            android:text="Proceed"
+                            android:textColor="@android:color/white" />
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
         </LinearLayout>
+
+
+
 
 
 <!--        <Button-->
@@ -423,4 +503,4 @@
 
     </RelativeLayout>
 
-</RelativeLayout>
+</ScrollView>

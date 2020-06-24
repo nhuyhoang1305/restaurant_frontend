@@ -59,7 +59,7 @@ public class MyCartAdapter extends RecyclerView.Adapter<MyCartAdapter.MyViewHold
         holder.txt_food_price.setText(String.valueOf(mCartItemList.get(position).getFoodPrice()));
         holder.txt_quantity.setText(String.valueOf(mCartItemList.get(position).getFoodQuantity()));
 
-        Double finalResult = mCartItemList.get(position).getFoodPrice()*mCartItemList.get(position).getFoodQuantity();
+        Double finalResult = mCartItemList.get(position).getFoodPrice()*mCartItemList.get(position).getFoodQuantity() + mCartItemList.get(position).getFoodExtraPrice();
         holder.txt_price_new.setText(String.valueOf(finalResult));
 
         holder.txt_extra_price.setText(new StringBuilder("Extra Price($) : +")
